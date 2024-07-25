@@ -1,0 +1,150 @@
+Microsoft Windows [Version 10.0.22631.3880]
+(c) Microsoft Corporation. All rights reserved.
+
+C:\Users\celestial>mysql -u root -p
+Enter password: ******
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 11
+Server version: 8.0.38 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2024, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| mysql              |
+| performance_schema |
+| celestial          |
+| sys                |
++--------------------+
+5 rows in set (0.00 sec)
+
+mysql> drop database celestial;
+Query OK, 5 rows affected (0.06 sec)
+
+mysql> create database celestial;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> use celestial;
+Database changed
+mysql> create table emp(eno int, ename varchar(50), addr varchar(100), post varchar(50), dept int, sal int, deptid int);
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> desc emp;
++--------+--------------+------+-----+---------+-------+
+| Field  | Type         | Null | Key | Default | Extra |
++--------+--------------+------+-----+---------+-------+
+| eno    | int          | YES  |     | NULL    |       |
+| ename  | varchar(50)  | YES  |     | NULL    |       |
+| addr   | varchar(100) | YES  |     | NULL    |       |
+| post   | varchar(50)  | YES  |     | NULL    |       |
+| dept   | int          | YES  |     | NULL    |       |
+| sal    | int          | YES  |     | NULL    |       |
+| deptid | int          | YES  |     | NULL    |       |
++--------+--------------+------+-----+---------+-------+
+7 rows in set (0.01 sec)
+
+mysql> create table dept(deptid int, deptname varchar(50));
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> desc dept;
++----------+-------------+------+-----+---------+-------+
+| Field    | Type        | Null | Key | Default | Extra |
++----------+-------------+------+-----+---------+-------+
+| deptid   | int         | YES  |     | NULL    |       |
+| deptname | varchar(50) | YES  |     | NULL    |       |
++----------+-------------+------+-----+---------+-------+
+2 rows in set (0.01 sec)
+
+mysql> insert into emp(eno, ename, addr, post, dept, sal, deptid)
+    -> Values
+    -> (1, 'Alex Johnson', 'Ktm', 'Manager', 1, 60000, NULL),
+    -> (2, 'Chris Martin', 'Pkr', 'Supervisor', 2, 12000, NULL),
+    -> (3, 'Taylor Swift', 'Pkr', 'Clerk', 1, 4000, NULL),
+    -> (4, 'Morgan Freeman', 'Biratnagar', 'Assistant', 2, 3500, NULL),
+    -> (5, 'Sandra Bullock', 'Pkr', 'Lecturer', 3, 4500, NULL);
+Query OK, 5 rows affected (0.01 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> select * from emp;
++------+----------------+------------+------------+------+-------+--------+
+| eno  | ename          | addr       | post       | dept | sal   | deptid |
++------+----------------+------------+------------+------+-------+--------+
+|    1 | Alex Johnson   | Ktm        | Manager    |    1 | 60000 |   NULL |
+|    2 | Chris Martin   | Pkr        | Supervisor |    2 | 12000 |   NULL |
+|    3 | Taylor Swift   | Pkr        | Clerk      |    1 |  4000 |   NULL |
+|    4 | Morgan Freeman | Biratnagar | Assistant  |    2 |  3500 |   NULL |
+|    5 | Sandra Bullock | Pkr        | Lecturer   |    3 |  4500 |   NULL |
++------+----------------+------------+------------+------+-------+--------+
+5 rows in set (0.00 sec)
+
+mysql> create view location as select * from emp where addr='Pkr';
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> select * from location;
++------+----------------+------+------------+------+------+--------+
+| eno  | ename          | addr | post       | dept | sal  | deptid |
++------+----------------+------+------------+------+------+--------+
+|    2 | Chris Martin   | Pkr  | Supervisor |    2 | 12000|   NULL |
+|    3 | Taylor Swift   | Pkr  | Clerk      |    1 |  4000|   NULL |
+|    5 | Sandra Bullock | Pkr  | Lecturer   |    3 |  4500|   NULL |
++------+----------------+------+------------+------+------+--------+
+3 rows in set (0.00 sec)
+
+mysql> create view search_eno as select * from emp where eno = 5;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> select * from search_eno;
++------+----------------+------+----------+------+------+--------+
+| eno  | ename          | addr | post     | dept | sal  | deptid |
++------+----------------+------+----------+------+------+--------+
+|    5 | Sandra Bullock | Pkr  | Lecturer |    3 | 4500 |   NULL |
++------+----------------+------+----------+------+------+--------+
+1 row in set (0.00 sec)
+
+mysql> select * from location where post = 'Lecturer';
++------+----------------+------+----------+------+------+--------+
+| eno  | ename          | addr | post     | dept | sal  | deptid |
++------+----------------+------+----------+------+------+--------+
+|    5 | Sandra Bullock | Pkr  | Lecturer |    3 | 4500 |   NULL |
++------+----------------+------+----------+------+------+--------+
+1 row in set (0.00 sec)
+
+mysql> select * from location where post = 'Manager';
+Empty set (0.00 sec)
+
+mysql> insert into dept(deptid, deptname)
+    -> values
+    -> (101, 'Department 1'),
+    -> (102, 'Department 2'),
+    -> (103, 'Department 3');
+Query OK, 3 rows affected (0.01 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> create VIEW Department as select d.deptname, COUNT(e.eno) as NumEmployees, SUM(e.sal) as TotalSalaryInvested from emp e JOIN dept d ON e.dept = d.deptid WHERE d.deptname = 'Department 1' group by d.deptname;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> select * from department;
+Empty set (0.01 sec)
+
+mysql> create view empdetail as select * from emp where dept = 2;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> select * from empdetail;
++------+----------------+------------+------------+------+------+--------+
+| eno  | ename          | addr       | post       | dept | sal  | deptid |
++------+----------------+------------+------------+------+------+--------+
+|    2 | Chris Martin   | Pkr        | Supervisor |    2 | 12000|   NULL |
+|    4 | Morgan Freeman | Biratnagar | Assistant  |    2 |  3500|   NULL |
++------+----------------+------------+------------+------+------+--------+
+2 rows in set (0.00 sec)
+
+mysql>

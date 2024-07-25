@@ -1,0 +1,388 @@
+# LAB 3
+
+Setting environment for using XAMPP for Windows.
+user@celestial c:\xampp
+# cd C:\xampp\mysql\bin
+
+user@celestial C:\xampp\mysql\bin
+# mysql -u root -p
+Enter password: ******
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MariaDB connection id is 11
+Server version: 10.4.32-MariaDB mariadb.org binary distribution
+
+Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+MariaDB [(none)]> drop database amrit;
+Query OK, 4 rows affected (0.042 sec)
+
+MariaDB [(none)]> create database celestial;
+Query OK, 1 row affected (0.010 sec)
+
+MariaDB [(none)]> use celestial;
+Database changed
+MariaDB [celestial]> create table emp(empno int,ename nvarchar(20),job nvarchar(10),deptname nvarchar(10),sal int,address nvarchar(30));
+Query OK, 0 rows affected (0.011 sec)
+
+MariaDB [celestial]> desc emp;
++----------+-------------+------+-----+---------+-------+
+| Field    | Type        | Null | Key | Default | Extra |
++----------+-------------+------+-----+---------+-------+
+| empno    | int(11)     | YES  |     | NULL    |       |
+| ename    | varchar(20) | YES  |     | NULL    |       |
+| job      | varchar(10) | YES  |     | NULL    |       |
+| deptname | varchar(10) | YES  |     | NULL    |       |
+| sal      | int(11)     | YES  |     | NULL    |       |
+| address  | varchar(30) | YES  |     | NULL    |       |
++----------+-------------+------+-----+---------+-------+
+6 rows in set (0.014 sec)
+
+MariaDB [celestial]> create table product(pid int,pname nvarchar(20),price int, description nvarchar(100));
+Query OK, 0 rows affected (0.007 sec)
+
+MariaDB [celestial]> desc product;
++-------------+--------------+------+-----+---------+-------+
+| Field       | Type         | Null | Key | Default | Extra |
++-------------+--------------+------+-----+---------+-------+
+| pid         | int(11)      | YES  |     | NULL    |       |
+| pname       | varchar(20)  | YES  |     | NULL    |       |
+| price       | int(11)      | YES  |     | NULL    |       |
+| description | varchar(100) | YES  |     | NULL    |       |
++-------------+--------------+------+-----+---------+-------+
+4 rows in set (0.010 sec)
+
+MariaDB [celestial]> create table customer(cid int,cname nvarchar(30),address nvarchar(100));
+Query OK, 0 rows affected (0.007 sec)
+
+MariaDB [celestial]> desc customer;
++---------+--------------+------+-----+---------+-------+
+| Field   | Type         | Null | Key | Default | Extra |
++---------+--------------+------+-----+---------+-------+
+| cid     | int(11)      | YES  |     | NULL    |       |
+| cname   | varchar(30)  | YES  |     | NULL    |       |
+| address | varchar(100) | YES  |     | NULL    |       |
++---------+--------------+------+-----+---------+-------+
+3 rows in set (0.005 sec)
+
+MariaDB [celestial]> create table sells(pid int,cid int,quantity int);
+Query OK, 0 rows affected (0.012 sec)
+
+MariaDB [celestial]> desc sells;
++----------+---------+------+-----+---------+-------+
+| Field    | Type    | Null | Key | Default | Extra |
++----------+---------+------+-----+---------+-------+
+| pid      | int(11) | YES  |     | NULL    |       |
+| cid      | int(11) | YES  |     | NULL    |       |
+| quantity | int(11) | YES  |     | NULL    |       |
++----------+---------+------+-----+---------+-------+
+3 rows in set (0.010 sec)
+
+MariaDB [celestial]> INSERT INTO EMP(empno,ename,job,deptname,sal,address)
+    -> VALUES
+    -> (1,'John','Manager','HR',55000,'123 John Street'),
+    -> (2,'Emma','Developer','IT',65000,'456 Emma Road'),
+    -> (3,'Liam','Salesperson','Sales',45000,'789 Liam Lane'),
+    -> (4,'Olivia','Analyst','Finance',60000,'321 Olivia Avenue'),
+    -> (5,'Noah','Designer','Marketing',50000,'987 Noah Blvd');
+Query OK, 5 rows affected, 1 warning (0.002 sec)
+Records: 5  Duplicates: 0  Warnings: 1
+
+MariaDB [celestial]> select * from emp;
++-------+-------+------------+-----------+-------+------------------+
+| empno | ename | job        | deptname  | sal   | address          |
++-------+-------+------------+-----------+-------+------------------+
+|     1 | John  | Manager    | HR        | 55000 | 123 John Street  |
+|     2 | Emma  | Developer  | IT        | 65000 | 456 Emma Road    |
+|     3 | Liam  | Salesperson| Sales     | 45000 | 789 Liam Lane    |
+|     4 | Olivia| Analyst    | Finance   | 60000 | 321 Olivia Avenue|
+|     5 | Noah  | Designer   | Marketing | 50000 | 987 Noah Blvd    |
++-------+-------+------------+-----------+-------+------------------+
+5 rows in set (0.000 sec)
+
+MariaDB [celestial]> INSERT INTO product(pid,pname,price,description)
+    -> VALUES
+    -> (1,'Product A',100,'Description A'),
+    -> (2,'Product B',200,'Description B'),
+    -> (3,'Product C',300,'Description C'),
+    -> (4,'Product D',400,'Description D'),
+    -> (5,'Product E',500,'Description E');
+Query OK, 5 rows affected (0.007 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+MariaDB [celestial]> select * from product;
++------+-----------+-------+---------------+
+| pid  | pname     | price | description   |
++------+-----------+-------+---------------+
+|    1 | Product A |   100 | Description A |
+|    2 | Product B |   200 | Description B |
+|    3 | Product C |   300 | Description C |
+|    4 | Product D |   400 | Description D |
+|    5 | Product E |   500 | Description E |
++------+-----------+-------+---------------+
+5 rows in set (0.001 sec)
+
+MariaDB [celestial]> INSERT INTO customer(cid,cname,address)
+    -> VALUES
+    -> (1,'John','123 John Street'),
+    -> (2,'Emma','456 Emma Road'),
+    -> (3,'Liam','789 Liam Lane'),
+    -> (4,'Olivia','321 Olivia Avenue'),
+    -> (5,'Noah','987 Noah Blvd');
+Query OK, 5 rows affected (0.008 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+MariaDB [celestial]> select * from customer;
++------+-------+------------------+
+| cid  | cname | address          |
++------+-------+------------------+
+|    1 | John  | 123 John Street  |
+|    2 | Emma  | 456 Emma Road    |
+|    3 | Liam  | 789 Liam Lane    |
+|    4 | Olivia| 321 Olivia Avenue|
+|    5 | Noah  | 987 Noah Blvd    |
++------+-------+------------------+
+5 rows in set (0.000 sec)
+
+MariaDB [celestial]> INSERT INTO sells(pid,cid,quantity)
+    -> VALUES
+    -> (1,1,10),
+    -> (2,2,5),
+    -> (3,3,8),
+    -> (4,4,3),
+    -> (5,5,2);
+Query OK, 5 rows affected (0.008 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+MariaDB [celestial]> select * from sells;
++------+------+----------+
+| pid  | cid  | quantity |
++------+------+----------+
+|    1 |    1 |       10 |
+|    2 |    2 |        5 |
+|    3 |    3 |        8 |
+|    4 |    4 |        3 |
+|    5 |    5 |        2 |
++------+------+----------+
+5 rows in set (0.000 sec)
+
+MariaDB [celestial]> SELECT * FROM emp WHERE sal > 25000;
++-------+-------+------------+-----------+-------+------------------+
+| empno | ename | job        | deptname  | sal   | address          |
++-------+-------+------------+-----------+-------+------------------+
+|     1 | John  | Manager    | HR        | 55000 | 123 John Street  |
+|     2 | Emma  | Developer  | IT        | 65000 | 456 Emma Road    |
+|     3 | Liam  | Salesperson| Sales     | 45000 | 789 Liam Lane    |
+|     4 | Olivia| Analyst    | Finance   | 60000 | 321 Olivia Avenue|
+|     5 | Noah  | Designer   | Marketing | 50000 | 987 Noah Blvd    |
++-------+-------+------------+-----------+-------+------------------+
+5 rows in set (0.003 sec)
+
+MariaDB [celestial]> SELECT * FROM product WHERE price > 500.00;
+Empty set (0.000 sec)
+
+MariaDB [celestial]> select * from product;
++------+-----------+-------+---------------+
+| pid  | pname     | price | description   |
++------+-----------+-------+---------------+
+|    1 | Product A |   100 | Description A |
+|    2 | Product B |   200 | Description B |
+|    3 | Product C |   300 | Description C |
+|    4 | Product D |   400 | Description D |
+|    5 | Product E |   500 | Description E |
++------+-----------+-------+---------------+
+5 rows in set (0.000 sec)
+
+MariaDB [celestial]> SELECT * FROM product WHERE price > 500.00;
+Empty set (0.000 sec)
+
+MariaDB [celestial]> SELECT * FROM customer WHERE address LIKE '%Pokhara%';
+Empty set (0.001 sec)
+
+MariaDB [celestial]> SELECT * FROM customer WHERE address LIKE '%Noah Blvd%';
++------+-------+---------------+
+| cid  | cname | address       |
++------+-------+---------------+
+|    5 | Noah  | 987 Noah Blvd |
++------+-------+---------------+
+1 row in set (0.001 sec)
+
+MariaDB [celestial]> SELECT * FROM emp WHERE job = 'HR' AND address LIKE '%Liam Lane%';
+Empty set (0.007 sec)
+
+MariaDB [celestial]> SELECT * FROM emp WHERE job = 'Manager';
++-------+-------+---------+----------+-------+---------------+
+| empno | ename | job     | deptname | sal   | address       |
++-------+-------+---------+----------+-------+---------------+
+|     1 | John  | Manager | HR       | 55000 | 123 John Street|
++-------+-------+---------+----------+-------+---------------+
+1 row in set (0.000 sec)
+
+MariaDB [celestial]> SELECT * FROM emp WHERE address LIKE '%Liam Lane%';
++-------+-------+------------+----------+-------+-------------+
+| empno | ename | job        | deptname | sal   | address     |
++-------+-------+------------+----------+-------+-------------+
+|     3 | Liam  | Salesperson| Sales    | 45000 | 789 Liam Lane|
++-------+-------+------------+----------+-------+-------------+
+1 row in set (0.000 sec)
+
+MariaDB [celestial]> SELECT COUNT(*) AS TotalEmployees FROM emp;
++----------------+ 
+| TotalEmployees |
++----------------+
+|              5 |
++----------------+
+1 row in set (0.007 sec)
+
+MariaDB [celestial]> SELECT COUNT(DISTINCT job) AS TotalPosts FROM emp;
++------------+
+| TotalPosts |
++------------+
+|          5 |
++------------+
+1 row in set (0.002 sec)
+
+MariaDB [celestial]> UPDATE emp SET sal = sal * 1.15 WHERE deptname = 'HR' AND job = 'Manager';
+Query OK, 1 row affected (0.007 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+MariaDB [celestial]> DESC emp;
++----------+-------------+------+-----+---------+-------+
+| Field    | Type        | Null | Key | Default | Extra |
++----------+-------------+------+-----+---------+-------+
+| empno    | int(11)     | YES  |     | NULL    |       |
+| ename    | varchar(20) | YES  |     | NULL    |       |
+| job      | varchar(10) | YES  |     | NULL    |       |
+| deptname | varchar(10) | YES  |     | NULL    |       |
+| sal      | int(11)     | YES  |     | NULL    |       |
+| address  | varchar(30) | YES  |     | NULL    |       |
++----------+-------------+------+-----+---------+-------+
+6 rows in set (0.004 sec)
+
+MariaDB [celestial]> select * from emp;
++-------+-------+------------+-----------+-------+------------------+
+| empno | ename | job        | deptname  | sal   | address          |
++-------+-------+------------+-----------+-------+------------------+
+|     1 | John  | Manager    | HR        | 63250 | 123 John Street  |
+|     2 | Emma  | Developer  | IT        | 65000 | 456 Emma Road    |
+|     3 | Liam  | Salesperson| Sales     | 45000 | 789 Liam Lane    |
+|     4 | Olivia| Analyst    | Finance   | 60000 | 321 Olivia Avenue|
+|     5 | Noah  | Designer   | Marketing | 50000 | 987 Noah Blvd    |
++-------+-------+------------+-----------+-------+------------------+
+5 rows in set (0.000 sec)
+
+MariaDB [celestial]> SELECT * FROM emp WHERE sal > (SELECT AVG(sal) FROM emp);
++-------+-------+-----------+----------+-------+------------------+
+| empno | ename | job       | deptname | sal   | address          |
++-------+-------+-----------+----------+-------+------------------+
+|     1 | John  | Manager   | HR       | 63250 | 123 John Street  |
+|     2 | Emma  | Developer | IT       | 65000 | 456 Emma Road    |
++-------+-------+-----------+----------+-------+------------------+
+2 rows in set (0.001 sec)
+
+MariaDB [celestial]> SELECT * FROM product WHERE pid IN (SELECT pid FROM sells WHERE cid = 5);
++------+-----------+-------+--------------+
+| pid  | pname     | price | description  |
++------+-----------+-------+--------------+
+|    5 | Product E |   500 | Description E|
++------+-----------+-------+--------------+
+1 row in set (0.007 sec)
+
+MariaDB [celestial]> SELECT * FROM customer WHERE cid IN (SELECT cid FROM sells WHERE pid = 3);
++------+-------+-------------+
+| cid  | cname | address     |
++------+-------+-------------+
+|    3 | Liam  | 789 Liam Lane|
++------+-------+-------------+
+1 row in set (0.000 sec)
+
+MariaDB [celestial]> SELECT * FROM product WHERE pid = (SELECT pid FROM sells GROUP BY pid ORDER BY SUM(quantity) DESC LIMIT 1);
++------+-----------+-------+---------------+
+| pid  | pname     | price | description   |
++------+-----------+-------+---------------+
+|    1 | Product A |   100 | Description A |
++------+-----------+-------+---------------+
+1 row in set (0.008 sec)
+
+MariaDB [celestial]> SELECT SUM(sal) AS TotalAmount FROM emp WHERE deptname = 'HR';
++-------------+
+| TotalAmount |
++-------------+
+|       63250 |
++-------------+
+1 row in set (0.000 sec)
+
+MariaDB [celestial]> SELECT * FROM emp WHERE sal = (SELECT MAX(sal) FROM emp);
++-------+-------+-----------+----------+-------+------------------+
+| empno | ename | job       | deptname | sal   | address          |
++-------+-------+-----------+----------+-------+------------------+
+|     2 | Emma  | Developer | IT       | 65000 | 456 Emma Road    |
++-------+-------+-----------+----------+-------+------------------+
+1 row in set (0.001 sec)
+
+MariaDB [celestial]> SELECT COUNT(*) AS NumEmployees FROM emp WHERE sal < (SELECT AVG(sal) FROM emp);
++--------------+
+| NumEmployees |
++--------------+
+|            3 |
++--------------+
+1 row in set (0.001 sec)
+
+MariaDB [celestial]> SELECT * FROM emp WHERE sal = (SELECT MIN(sal) FROM emp WHERE deptname = 'Sales');
++-------+-------+------------+----------+-------+-------------+
+| empno | ename | job        | deptname | sal   | address     |
++-------+-------+------------+----------+-------+-------------+
+|     3 | Liam  | Salesperson| Sales    | 45000 | 789 Liam Lane|
++-------+-------+------------+----------+-------+-------------+
+1 row in set (0.000 sec)
+
+MariaDB [celestial]> UPDATE emp SET sal = sal + 1000 WHERE sal < (SELECT AVG(sal) FROM emp);
+Query OK, 3 rows affected (0.008 sec)
+Rows matched: 3  Changed: 3  Warnings: 0
+
+MariaDB [celestial]> SELECT * FROM emp;
++-------+-------+------------+-----------+-------+------------------+
+| empno | ename | job        | deptname  | sal   | address          |
++-------+-------+------------+-----------+-------+------------------+
+|     1 | John  | Manager    | HR        | 63250 | 123 John Street  |
+|     2 | Emma  | Developer  | IT        | 65000 | 456 Emma Road    |
+|     3 | Liam  | Salesperson| Sales     | 46000 | 789 Liam Lane    |
+|     4 | Olivia| Analyst    | Finance   | 61000 | 321 Olivia Avenue|
+|     5 | Noah  | Designer   | Marketing | 51000 | 987 Noah Blvd    |
++-------+-------+------------+-----------+-------+------------------+
+5 rows in set (0.000 sec)
+
+MariaDB [celestial]> UPDATE emp SET deptname = 'Sales', address = 'Pokhara' WHERE ename = 'Sita';
+Query OK, 0 rows affected (0.000 sec)
+Rows matched: 0  Changed: 0  Warnings: 0
+
+MariaDB [celestial]> SELECT * FROM emp;
++-------+-------+------------+-----------+-------+------------------+
+| empno | ename | job        | deptname  | sal   | address          |
++-------+-------+------------+-----------+-------+------------------+
+|     1 | John  | Manager    | HR        | 63250 | 123 John Street  |
+|     2 | Emma  | Developer  | IT        | 65000 | 456 Emma Road    |
+|     3 | Liam  | Salesperson| Sales     | 46000 | 789 Liam Lane    |
+|     4 | Olivia| Analyst    | Finance   | 61000 | 321 Olivia Avenue|
+|     5 | Noah  | Designer   | Marketing | 51000 | 987 Noah Blvd    |
++-------+-------+------------+-----------+-------+------------------+
+5 rows in set (0.000 sec)
+
+MariaDB [celestial]> UPDATE emp SET deptname = 'Sales', address = 'Pokhara' WHERE ename = 'Liam';
+Query OK, 1 row affected (0.007 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+MariaDB [celestial]> SELECT * FROM emp;
++-------+-------+------------+-----------+-------+------------------+
+| empno | ename | job        | deptname  | sal   | address          |
++-------+-------+------------+-----------+-------+------------------+
+|     1 | John  | Manager    | HR        | 63250 | 123 John Street  |
+|     2 | Emma  | Developer  | IT        | 65000 | 456 Emma Road    |
+|     3 | Liam  | Salesperson| Sales     | 46000 | Pokhara          |
+|     4 | Olivia| Analyst    | Finance   | 61000 | 321 Olivia Avenue|
+|     5 | Noah  | Designer   | Marketing | 51000 | 987 Noah Blvd    |
++-------+-------+------------+-----------+-------+------------------+
+5 rows in set (0.000 sec)
+
+MariaDB [celestial]> 

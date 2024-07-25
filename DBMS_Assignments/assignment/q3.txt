@@ -1,0 +1,134 @@
+# This is the answer of the 3rd question of the assignment.
+
+Enter password: *********
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 11
+Server version: 8.0.37 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2024, Oracle and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| college            |
+| employee_db        |
+| client_db          |
+| information_schema |
+| mysql              |
+| performance_schema |
+| sakila             |
+| sys                |
+| world              |
++--------------------+
+9 rows in set (0.00 sec)
+
+mysql> create database teacher_db;
+Query OK, 1 row affected (0.02 sec)
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| college            |
+| employee_db        |
+| client_db          |
+| information_schema |
+| mysql              |
+| performance_schema |
+| sakila             |
+| sys                |
+| teacher_db         |
+| world              |
++--------------------+
+10 rows in set (0.00 sec)
+
+mysql> use teacher_db;
+Database changed
+
+mysql> CREATE TABLE Teacher (
+    -> Id INT,
+    -> Name VARCHAR(50),
+    -> DeptNo INT,
+    -> Date_of_joining DATE,
+    -> DeptName VARCHAR(50),
+    -> Location VARCHAR(50),
+    -> Salary DECIMAL(10, 2)
+    -> );
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> INSERT INTO Teacher (Id, Name, DeptNo, Date_of_joining, DeptName, Location, Salary)
+    -> VALUES
+    -> (1, 'John Doe', 101, '2019-04-01', 'Mathematics', 'New York', 48000.00),
+    -> (2, 'Jane Smith', 102, '2020-05-15', 'Commerce', 'Chicago', 46000.00),
+    -> (3, 'Lisa White', 101, '2018-03-20', 'Mathematics', 'New York', 49000.00),
+    -> (4, 'Mark Brown', 103, '2017-07-10', 'Physics', 'San Francisco', 52000.00),
+    -> (5, 'Emily Davis', 102, '2021-09-05', 'Commerce', 'Chicago', 47000.00);
+Query OK, 5 rows affected (0.02 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> START TRANSACTION;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> UPDATE Teacher
+    -> SET Salary = Salary * 1.25
+    -> WHERE DeptName = 'Mathematics';
+Query OK, 2 rows affected (0.00 sec)
+Rows matched: 2  Changed: 2  Warnings: 0
+
+mysql> SELECT * FROM Teacher WHERE DeptName = 'Mathematics';
++------+-----------+--------+-----------------+-------------+-------------+----------+
+| Id   | Name      | DeptNo | Date_of_joining | DeptName    | Location    | Salary   |
++------+-----------+--------+-----------------+-------------+-------------+----------+
+|    1 | John Doe  |    101 | 2019-04-01      | Mathematics | New York    | 60000.00 |
+|    3 | Lisa White|    101 | 2018-03-20      | Mathematics | New York    | 61250.00 |
++------+-----------+--------+-----------------+-------------+-------------+----------+
+2 rows in set (0.00 sec)
+
+mysql> ROLLBACK;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> SELECT * FROM Teacher WHERE DeptName = 'Mathematics';
++------+-----------+--------+-----------------+-------------+-------------+----------+
+| Id   | Name      | DeptNo | Date_of_joining | DeptName    | Location    | Salary   |
++------+-----------+--------+-----------------+-------------+-------------+----------+
+|    1 | John Doe  |    101 | 2019-04-01      | Mathematics | New York    | 48000.00 |
+|    3 | Lisa White|    101 | 2018-03-20      | Mathematics | New York    | 49000.00 |
++------+-----------+--------+-----------------+-------------+-------------+----------+
+2 rows in set (0.00 sec)
+
+mysql> START TRANSACTION;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> UPDATE Teacher
+    -> SET Salary = Salary * 1.15
+    -> WHERE DeptName = 'Commerce';
+Query OK, 2 rows affected (0.00 sec)
+Rows matched: 2  Changed: 2  Warnings: 0
+
+mysql> SELECT * FROM Teacher WHERE DeptName = 'Commerce';
++------+-------------+--------+-----------------+----------+----------+----------+
+| Id   | Name        | DeptNo | Date_of_joining | DeptName | Location | Salary   |
++------+-------------+--------+-----------------+----------+----------+----------+
+|    2 | Jane Smith  |    102 | 2020-05-15      | Commerce | Chicago  | 52900.00 |
+|    5 | Emily Davis |    102 | 2021-09-05      | Commerce | Chicago  | 54050.00 |
++------+-------------+--------+-----------------+----------+----------+----------+
+2 rows in set (0.00 sec)
+
+mysql> COMMIT;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> SELECT * FROM Teacher WHERE DeptName = 'Commerce';
++------+-------------+--------+-----------------+----------+----------+----------+
+| Id   | Name        | DeptNo | Date_of_joining | DeptName | Location | Salary   |
++------+-------------+--------+-----------------+----------+----------+----------+
+|    2 | Jane Smith  |    102 | 2020-05-15      | Commerce | Chicago  | 52900.00 |
+|    5 | Emily Davis |    102 | 2021-09-05      | Commerce | Chicago  | 54050.00 |
++------+-------------+--------+-----------------+----------+----------+----------+
+2 rows in set (0.00 sec)
+
+mysql>

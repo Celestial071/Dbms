@@ -1,0 +1,116 @@
+# This is the answer of the 7th question of the assignment.
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| college            |
+| employee_db        |
+| client_db          |
+| teacher_db         |
+| emp_db             |
+| company_db         |
+| information_schema |
+| mysql              |
+| performance_schema |
+| sakila             |
+| sys                |
+| world              |
++--------------------+
+12 rows in set (0.00 sec)
+
+mysql> use company_db;
+Database changed
+
+mysql> SELECT e1.ename AS employee_name
+    -> FROM Emp e1
+    -> JOIN Emp e2 ON e1.mgr = e2.empno
+    -> WHERE e1.sal > e2.sal;
++---------------+
+| employee_name |
++---------------+
+| Chandler Bing |
++---------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT e.ename AS employee_name
+    -> FROM Emp e
+    -> JOIN (
+    ->     SELECT deptno, MAX(sal) AS max_salary
+    ->     FROM Emp
+    ->     GROUP BY deptno
+    -> ) dept_max
+    -> ON e.deptno = dept_max.deptno AND e.sal = dept_max.max_salary;
++---------------+
+| employee_name |
++---------------+
+| Alex Turner   |
+| Chandler Bing |
+| Joey Tribbiani|
++---------------+
+3 rows in set (0.00 sec)
+
+mysql> SELECT e1.ename AS employee_name_1, e2.ename AS employee_name_2, d.loc
+    -> FROM Emp e1
+    -> JOIN Dept d ON e1.deptno = d.deptno
+    -> JOIN Emp e2 ON e1.deptno = e2.deptno AND e1.empno != e2.empno
+    -> JOIN Dept d2 ON e2.deptno = d2.deptno AND d.loc = d2.loc;
++-----------------+-----------------+---------------+
+| employee_name_1 | employee_name_2 | loc           |
++-----------------+-----------------+---------------+
+| Alex Turner     | Rachel Green    | New York      |
+| Alex Turner     | Monica Geller   | New York      |
+| Rachel Green    | Alex Turner     | New York      |
+| Rachel Green    | Monica Geller   | New York      |
+| Monica Geller   | Alex Turner     | New York      |
+| Monica Geller   | Rachel Green    | New York      |
+| Ross Geller     | Chandler Bing   | San Francisco |
+| Chandler Bing   | Ross Geller     | San Francisco |
++-----------------+-----------------+---------------+
+8 rows in set (0.00 sec)
+
+mysql> SELECT e.ename AS employee_name
+    -> FROM Emp e
+    -> JOIN (
+    ->     SELECT deptno, MIN(sal) AS min_salary
+    ->     FROM Emp
+    ->     GROUP BY deptno
+    -> ) dept_min
+    -> ON e.deptno = dept_min.deptno AND e.sal = dept_min.min_salary;
++---------------+
+| employee_name |
++---------------+
+| Monica Geller |
+| Chandler Bing |
+| Joey Tribbiani|
++---------------+
+3 rows in set (0.00 sec)
+
+mysql> SELECT d.dname AS department_name
+    -> FROM Dept d
+    -> LEFT JOIN Emp e ON d.deptno = e.deptno
+    -> WHERE e.empno IS NULL;
+Empty set (0.00 sec)
+
+mysql> select * from emp;
++-------+---------------+---------------+------+------------+----------+---------+--------+
+| empno | ename         | job           | mgr  | hiredate   | sal      | comm    | deptno |
++-------+---------------+---------------+------+------------+----------+---------+--------+
+|     1 | Alex Turner   | Manager       | NULL | 1990-01-15 | 92000.00 |    NULL |     10 |
+|     2 | Rachel Green  | Sales Associate|    1 | 2000-03-22 | 60000.00 | 1000.00 |     10 |
+|     3 | Monica Geller | Chef          |    1 | 1998-07-10 | 50000.00 |    NULL |     10 |
+|     4 | Ross Geller   | Paleontologist| NULL | 1995-09-01 | 75000.00 |    NULL |     20 |
+|     5 | Chandler Bing | IT Specialist |    4 | 1996-05-12 | 70000.00 | 1500.00 |     20 |
+|     6 | Joey Tribbiani| Actor         | NULL | 2003-11-16 | 45000.00 |  500.00 |     30 |
++-------+---------------+---------------+------+------------+----------+---------+--------+
+6 rows in set (0.00 sec)
+
+mysql> select * from dept;
++--------+-------------+---------------+
+| deptno | dname       | loc           |
++--------+-------------+---------------+
+|     10 | Sales       | New York      |
+|     20 | Engineering | San Francisco |
+|     30 | Marketing   | Los Angeles   |
++--------+-------------+---------------+
+3 rows in set (0.00 sec)

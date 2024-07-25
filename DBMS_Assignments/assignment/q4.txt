@@ -1,0 +1,138 @@
+# This is the answer of the 4th question of the assignment.
+
+Enter password: *********
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 12
+Server version: 8.0.37 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2024, Oracle and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| college            |
+| employee_db        |
+| client_db          |
+| teacher_db         |
+| information_schema |
+| mysql              |
+| performance_schema |
+| sakila             |
+| sys                |
+| world              |
++--------------------+
+10 rows in set (0.00 sec)
+
+mysql> create database sales_db;
+Query OK, 1 row affected (0.02 sec)
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| college            |
+| employee_db        |
+| client_db          |
+| teacher_db         |
+| information_schema |
+| mysql              |
+| performance_schema |
+| sakila             |
+| sales_db           |
+| sys                |
+| world              |
++--------------------+
+11 rows in set (0.00 sec)
+
+mysql> use sales_db;
+Database changed
+
+mysql> CREATE TABLE Sales (
+    -> Sales_No INT,
+    -> Sales_Name VARCHAR(50),
+    -> Branch VARCHAR(50),
+    -> Sales_Amount DECIMAL(10, 2),
+    -> DOB DATE
+    -> );
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> INSERT INTO Sales (Sales_No, Sales_Name, Branch, Sales_Amount, DOB)
+    -> VALUES
+    -> (1, 'Tom Hanks', 'North', 16000.00, '1980-12-21'),
+    -> (2, 'Jerry Seinfeld', 'South', 21000.00, '1975-06-15'),
+    -> (3, 'Bruce Wayne', 'East', 19000.00, '1982-12-10'),
+    -> (4, 'Clark Kent', 'West', 23000.00, '1978-03-05'),
+    -> (5, 'Peter Parker', 'North', 17500.00, '1985-12-25');
+Query OK, 5 rows affected (0.02 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> SELECT * FROM Sales;
++----------+---------------+--------+--------------+------------+
+| Sales_No | Sales_Name    | Branch | Sales_Amount | DOB        |
++----------+---------------+--------+--------------+------------+
+|        1 | Tom Hanks     | North  |     16000.00 | 1980-12-21 |
+|        2 | Jerry Seinfeld| South  |     21000.00 | 1975-06-15 |
+|        3 | Bruce Wayne   | East   |     19000.00 | 1982-12-10 |
+|        4 | Clark Kent    | West   |     23000.00 | 1978-03-05 |
+|        5 | Peter Parker  | North  |     17500.00 | 1985-12-25 |
++----------+---------------+--------+--------------+------------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT Branch, SUM(Sales_Amount) AS Total_Sales_Amount
+    -> FROM Sales
+    -> GROUP BY Branch;
++--------+--------------------+
+| Branch | Total_Sales_Amount |
++--------+--------------------+
+| North  |           33500.00 |
+| South  |           21000.00 |
+| East   |           19000.00 |
+| West   |           23000.00 |
++--------+--------------------+
+4 rows in set (0.00 sec)
+
+mysql> SELECT Branch, AVG(Sales_Amount) AS Average_Sales_Amount
+    -> FROM Sales
+    -> GROUP BY Branch;
++--------+----------------------+
+| Branch | Average_Sales_Amount |
++--------+----------------------+
+| North  |         16750.000000 |
+| South  |         21000.000000 |
+| East   |         19000.000000 |
+| West   |         23000.000000 |
++--------+----------------------+
+4 rows in set (0.00 sec)
+
+mysql> SELECT Sales_Name, DATE_FORMAT(DOB, '%d-%b-%y') AS DOB
+    -> FROM Sales
+    -> WHERE MONTH(DOB) = 12;
++--------------+-----------+
+| Sales_Name   | DOB       |
++--------------+-----------+
+| Tom Hanks    | 21-Dec-80 |
+| Bruce Wayne  | 10-Dec-82 |
+| Peter Parker | 25-Dec-85 |
++--------------+-----------+
+3 rows in set (0.00 sec)
+
+mysql> SELECT Sales_Name, DOB
+    -> FROM Sales
+    -> ORDER BY DATE_FORMAT(DOB, '%M');
++-----------------+------------+
+| Sales_Name      | DOB        |
++-----------------+------------+
+| Jerry Seinfeld  | 1975-06-15 |
+| Clark Kent      | 1978-03-05 |
+| Tom Hanks       | 1980-12-21 |
+| Bruce Wayne     | 1982-12-10 |
+| Peter Parker    | 1985-12-25 |
++-----------------+------------+
+5 rows in set (0.00 sec)
+
+mysql>

@@ -1,0 +1,368 @@
+Microsoft Windows [Version 10.0.22631.3880]
+(c) Microsoft Corporation. All rights reserved.
+
+C:\Users\celestial>mysql -u root -p
+Enter password: ******
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 9
+Server version: 8.0.38 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2024, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| mysql              |
+| performance_schema |
+| celestial          |
+| sys                |
++--------------------+
+5 rows in set (0.01 sec)
+
+mysql> drop database celestial;
+Query OK, 1 row affected (0.02 sec)
+
+mysql> create database celestial;
+Query OK, 1 row affected (0.00 sec)
+
+mysql> use celestial;
+Database changed
+mysql> create table dept(deptid int primary key, depname varchar(50));
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> create table emp(eno int primary key, ename nvarchar(30), deptid int, foreign key(Deptid) REFERENCES dept(deptid));
+Query OK, 0 rows affected, 1 warning (0.04 sec)
+
+mysql> insert into dept(deptid, depname) VALUES (1, 'cmp'), (2, 'elx'), (3, 'civil'), (4, 'mechanical');
+Query OK, 4 rows affected (0.02 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+mysql> select * from dept;
++--------+------------+
+| deptid | depname    |
++--------+------------+
+|      1 | cmp        |
+|      2 | elx        |
+|      3 | civil      |
+|      4 | mechanical |
++--------+------------+
+4 rows in set (0.01 sec)
+
+mysql> insert into emp(eno, ename, deptid) VALUES (1, 'John Doe', 1), (2, 'Emma Stone', 1), (3, 'Liam Smith', 2), (4, 'Olivia Brown', 2), (5, 'Noah White', 3);
+Query OK, 5 rows affected (0.01 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> select * from emp;
++-----+-------------+--------+
+| eno | ename       | deptid |
++-----+-------------+--------+
+|   1 | John Doe    |      1 |
+|   2 | Emma Stone  |      1 |
+|   3 | Liam Smith  |      2 |
+|   4 | Olivia Brown|      2 |
+|   5 | Noah White  |      3 |
++-----+-------------+--------+
+5 rows in set (0.00 sec)
+
+mysql> select * from emp natural join dept;
++--------+-----+-------------+---------+
+| deptid | eno | ename       | depname |
++--------+-----+-------------+---------+
+|      1 |   1 | John Doe    | cmp     |
+|      1 |   2 | Emma Stone  | cmp     |
+|      2 |   3 | Liam Smith  | elx     |
+|      2 |   4 | Olivia Brown| elx     |
+|      3 |   5 | Noah White  | civil   |
++--------+-----+-------------+---------+
+5 rows in set (0.00 sec)
+
+mysql> select emp.eno, emp.ename, emp.deptid, dept.depname from emp inner join dept on emp.deptid = dept.deptid;
++-----+-------------+--------+---------+
+| eno | ename       | deptid | depname |
++-----+-------------+--------+---------+
+|   1 | John Doe    |      1 | cmp     |
+|   2 | Emma Stone  |      1 | cmp     |
+|   3 | Liam Smith  |      2 | elx     |
+|   4 | Olivia Brown|      2 | elx     |
+|   5 | Noah White  |      3 | civil   |
++-----+-------------+--------+---------+
+5 rows in set (0.00 sec)
+
+mysql> select * from emp left outer join dept on emp.deptid = dept.deptid;
++-----+-------------+--------+--------+---------+
+| eno | ename       | deptid | deptid | depname |
++-----+-------------+--------+--------+---------+
+|   1 | John Doe    |      1 |      1 | cmp     |
+|   2 | Emma Stone  |      1 |      1 | cmp     |
+|   3 | Liam Smith  |      2 |      2 | elx     |
+|   4 | Olivia Brown|      2 |      2 | elx     |
+|   5 | Noah White  |      3 |      3 | civil   |
++-----+-------------+--------+--------+---------+
+5 rows in set (0.00 sec)
+
+mysql> select * from emp right outer join dept on emp.deptid = dept.deptid;
++------+-------------+--------+--------+------------+
+| eno  | ename       | deptid | deptid | depname    |
++------+-------------+--------+--------+------------+
+|    1 | John Doe    |      1 |      1 | cmp        |
+|    2 | Emma Stone  |      1 |      1 | cmp        |
+|    3 | Liam Smith  |      2 |      2 | elx        |
+|    4 | Olivia Brown|      2 |      2 | elx        |
+|    5 | Noah White  |      3 |      3 | civil      |
+| NULL | NULL        |   NULL |      4 | mechanical |
++------+-------------+--------+--------+------------+
+6 rows in set (0.00 sec)
+
+mysql> select * from emp left outer join dept on emp.deptid = dept.deptid union select * from emp right outer join dept on emp.deptid = dept.deptid;
++------+-------------+--------+--------+------------+
+| eno  | ename       | deptid | deptid | depname    |
++------+-------------+--------+--------+------------+
+|    1 | John Doe    |      1 |      1 | cmp        |
+|    2 | Emma Stone  |      1 |      1 | cmp        |
+|    3 | Liam Smith  |      2 |      2 | elx        |
+|    4 | Olivia Brown|      2 |      2 | elx        |
+|    5 | Noah White  |      3 |      3 | civil      |
+| NULL | NULL        |   NULL |      4 | mechanical |
++------+-------------+--------+--------+------------+
+6 rows in set (0.01 sec)
+
+mysql> select * from emp;
++-----+-------------+--------+
+| eno | ename       | deptid |
++-----+-------------+--------+
+|   1 | John Doe    |      1 |
+|   2 | Emma Stone  |      1 |
+|   3 | Liam Smith  |      2 |
+|   4 | Olivia Brown|      2 |
+|   5 | Noah White  |      3 |
++-----+-------------+--------+
+5 rows in set (0.00 sec)
+
+mysql> select * from dept;
++--------+------------+
+| deptid | depname    |
++--------+------------+
+|      1 | cmp        |
+|      2 | elx        |
+|      3 | civil      |
+|      4 | mechanical |
++--------+------------+
+4 rows in set (0.00 sec)
+
+mysql> create table empinfo(eno int primary key, addr varchar(100), DOB date, phone varchar(20), foreign key(eno) references emp(eno));
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> insert into empinfo(eno, addr, DOB, phone) VALUES (1, 'Kathmandu', '2000-02-01', '1234567890'), (2, 'Pokhara', '1995-05-10', '9812435632'), (3, 'Biratnagar', '1998-02-14', '9573209489'), (4, 'Lalitpur', '1992-02-20', '9845325609'), (5, 'Bhaktapur', '1990-03-18', '9732145609');
+Query OK, 5 rows affected (0.00 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> select * from empinfo;
++-----+------------+------------+------------+
+| eno | addr       | DOB        | phone      |
++-----+------------+------------+------------+
+|   1 | Kathmandu  | 2000-02-01 | 1234567890 |
+|   2 | Pokhara    | 1995-05-10 | 9812435632 |
+|   3 | Biratnagar | 1998-02-14 | 9573209489 |
+|   4 | Lalitpur   | 1992-02-20 | 9845325609 |
+|   5 | Bhaktapur  | 1990-03-18 | 9732145609 |
++-----+------------+------------+------------+
+5 rows in set (0.01 sec)
+
+mysql> select * from emp inner join empinfo on emp.eno = empinfo.eno;
++-----+-------------+--------+-----+------------+------------+------------+
+| eno | ename       | deptid | eno | addr       | DOB        | phone      |
++-----+-------------+--------+-----+------------+------------+------------+
+|   1 | John Doe    |      1 |   1 | Kathmandu  | 2000-02-01 | 1234567890 |
+|   2 | Emma Stone  |      1 |   2 | Pokhara    | 1995-05-10 | 9812435632 |
+|   3 | Liam Smith  |      2 |   3 | Biratnagar | 1998-02-14 | 9573209489 |
+|   4 | Olivia Brown|      2 |   4 | Lalitpur   | 1992-02-20 | 9845325609 |
+|   5 | Noah White  |      3 |   5 | Bhaktapur  | 1990-03-18 | 9732145609 |
++-----+-------------+--------+-----+------------+------------+------------+
+5 rows in set (0.00 sec)
+
+mysql> select * from emp natural join empinfo;
++-----+-------------+--------+------------+------------+------------+
+| eno | ename       | deptid | addr       | DOB        | phone      |
++-----+-------------+--------+------------+------------+------------+
+|   1 | John Doe    |      1 | Kathmandu  | 2000-02-01 | 1234567890 |
+|   2 | Emma Stone  |      1 | Pokhara    | 1995-05-10 | 9812435632 |
+|   3 | Liam Smith  |      2 | Biratnagar | 1998-02-14 | 9573209489 |
+|   4 | Olivia Brown|      2 | Lalitpur   | 1992-02-20 | 9845325609 |
+|   5 | Noah White  |      3 | Bhaktapur  | 1990-03-18 | 9732145609 |
++-----+-------------+--------+------------+------------+------------+
+5 rows in set (0.00 sec)
+
+mysql> select * from emp join empinfo on emp.eno = empinfo.eno;
++-----+-------------+--------+-----+------------+------------+------------+
+| eno | ename       | deptid | eno | addr       | DOB        | phone      |
++-----+-------------+--------+-----+------------+------------+------------+
+|   1 | John Doe    |      1 |   1 | Kathmandu  | 2000-02-01 | 1234567890 |
+|   2 | Emma Stone  |      1 |   2 | Pokhara    | 1995-05-10 | 9812435632 |
+|   3 | Liam Smith  |      2 |   3 | Biratnagar | 1998-02-14 | 9573209489 |
+|   4 | Olivia Brown|      2 |   4 | Lalitpur   | 1992-02-20 | 9845325609 |
+|   5 | Noah White  |      3 |   5 | Bhaktapur  | 1990-03-18 | 9732145609 |
++-----+-------------+--------+-----+------------+------------+------------+
+5 rows in set (0.00 sec)
+
+mysql> select * from emp, empinfo where emp.eno < empinfo.eno;
++-----+-------------+--------+-----+------------+------------+------------+
+| eno | ename       | deptid | eno | addr       | DOB        | phone      |
++-----+-------------+--------+-----+------------+------------+------------+
+|   1 | John Doe    |      1 |   2 | Pokhara    | 1995-05-10 | 9812435632 |
+|   1 | John Doe    |      1 |   3 | Biratnagar | 1998-02-14 | 9573209489 |
+|   1 | John Doe    |      1 |   4 | Lalitpur   | 1992-02-20 | 9845325609 |
+|   1 | John Doe    |      1 |   5 | Bhaktapur  | 1990-03-18 | 9732145609 |
+|   2 | Emma Stone  |      1 |   3 | Biratnagar | 1998-02-14 | 9573209489 |
+|   2 | Emma Stone  |      1 |   4 | Lalitpur   | 1992-02-20 | 9845325609 |
+|   2 | Emma Stone  |      1 |   5 | Bhaktapur  | 1990-03-18 | 9732145609 |
+|   3 | Liam Smith  |      2 |   4 | Lalitpur   | 1992-02-20 | 9845325609 |
+|   3 | Liam Smith  |      2 |   5 | Bhaktapur  | 1990-03-18 | 9732145609 |
+|   4 | Olivia Brown|      2 |   5 | Bhaktapur  | 1990-03-18 | 9732145609 |
++-----+-------------+--------+-----+------------+------------+------------+
+10 rows in set (0.00 sec)
+
+mysql> select * from emp left outer join empinfo on emp.eno = empinfo.eno;
++-----+-------------+--------+-----+------------+------------+------------+
+| eno | ename       | deptid | eno | addr       | DOB        | phone      |
++-----+-------------+--------+-----+------------+------------+------------+
+|   1 | John Doe    |      1 |   1 | Kathmandu  | 2000-02-01 | 1234567890 |
+|   2 | Emma Stone  |      1 |   2 | Pokhara    | 1995-05-10 | 9812435632 |
+|   3 | Liam Smith  |      2 |   3 | Biratnagar | 1998-02-14 | 9573209489 |
+|   4 | Olivia Brown|      2 |   4 | Lalitpur   | 1992-02-20 | 9845325609 |
+|   5 | Noah White  |      3 |   5 | Bhaktapur  | 1990-03-18 | 9732145609 |
++-----+-------------+--------+-----+------------+------------+------------+
+5 rows in set (0.00 sec)
+
+mysql> select * from emp right outer join empinfo on emp.eno = empinfo.eno;
++------+-------------+--------+-----+------------+------------+------------+
+| eno  | ename       | deptid | eno | addr       | DOB        | phone      |
++------+-------------+--------+-----+------------+------------+------------+
+|    1 | John Doe    |      1 |   1 | Kathmandu  | 2000-02-01 | 1234567890 |
+|    2 | Emma Stone  |      1 |   2 | Pokhara    | 1995-05-10 | 9812435632 |
+|    3 | Liam Smith  |      2 |   3 | Biratnagar | 1998-02-14 | 9573209489 |
+|    4 | Olivia Brown|      2 |   4 | Lalitpur   | 1992-02-20 | 9845325609 |
+|    5 | Noah White  |      3 |   5 | Bhaktapur  | 1990-03-18 | 9732145609 |
++------+-------------+--------+-----+------------+------------+------------+
+5 rows in set (0.00 sec)
+
+mysql> update empinfo set addr = 'Pokhara' where eno = 3;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from empinfo;
++-----+-----------+------------+------------+
+| eno | addr      | DOB        | phone      |
++-----+-----------+------------+------------+
+|   1 | Kathmandu | 2000-02-01 | 1234567890 |
+|   2 | Pokhara   | 1995-05-10 | 9812435632 |
+|   3 | Pokhara   | 1998-02-14 | 9573209489 |
+|   4 | Lalitpur  | 1992-02-20 | 9845325609 |
+|   5 | Bhaktapur | 1990-03-18 | 9732145609 |
++-----+-----------+------------+------------+
+5 rows in set (0.00 sec)
+
+mysql> alter table emp add column salary int;
+Query OK, 0 rows affected (0.02 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> select * from emp;
++-----+-------------+--------+--------+
+| eno | ename       | deptid | salary |
++-----+-------------+--------+--------+
+|   1 | John Doe    |      1 |   NULL |
+|   2 | Emma Stone  |      1 |   NULL |
+|   3 | Liam Smith  |      2 |   NULL |
+|   4 | Olivia Brown|      2 |   NULL |
+|   5 | Noah White  |      3 |   NULL |
++-----+-------------+--------+--------+
+5 rows in set (0.00 sec)
+
+mysql> update emp set salary = 55000 where eno = 1;
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update emp set salary = 65000 where eno = 2;
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update emp set salary = 75000 where eno = 3;
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update emp set salary = 60000 where eno = 4;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update emp set salary = 50000 where eno = 5;
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from emp;
++-----+-------------+--------+--------+
+| eno | ename       | deptid | salary |
++-----+-------------+--------+--------+
+|   1 | John Doe    |      1 |  55000 |
+|   2 | Emma Stone  |      1 |  65000 |
+|   3 | Liam Smith  |      2 |  75000 |
+|   4 | Olivia Brown|      2 |  60000 |
+|   5 | Noah White  |      3 |  50000 |
++-----+-------------+--------+--------+
+5 rows in set (0.00 sec)
+
+mysql> select deptid, Max(salary) AS max_salary from emp GROUP BY deptid ORDER BY max_salary DESC LIMIT 1;
++--------+------------+
+| deptid | max_salary |
++--------+------------+
+|      2 |      75000 |
++--------+------------+
+1 row in set (0.01 sec)
+
+mysql> select dept.deptid, dept.depname from dept inner join emp on dept.deptid = emp.deptid where emp.salary = (select MAX(salary) from emp);
++--------+---------+
+| deptid | depname |
++--------+---------+
+|      2 | elx     |
++--------+---------+
+1 row in set (0.00 sec)
+
+mysql> select * from dept;
++--------+------------+
+| deptid | depname    |
++--------+------------+
+|      1 | cmp        |
+|      2 | elx        |
+|      3 | civil      |
+|      4 | mechanical |
++--------+------------+
+4 rows in set (0.00 sec)
+
+mysql> select * from emp;
++-----+-------------+--------+--------+
+| eno | ename       | deptid | salary |
++-----+-------------+--------+--------+
+|   1 | John Doe    |      1 |  55000 |
+|   2 | Emma Stone  |      1 |  65000 |
+|   3 | Liam Smith  |      2 |  75000 |
+|   4 | Olivia Brown|      2 |  60000 |
+|   5 | Noah White  |      3 |  50000 |
++-----+-------------+--------+--------+
+5 rows in set (0.00 sec)
+
+mysql> select emp.eno, empinfo.addr, empinfo.DOB, empinfo.phone from emp inner join empinfo on emp.eno = empinfo.eno where emp.deptid = (select deptid from dept where depname = 'cmp');
++-----+-----------+------------+------------+
+| eno | addr      | DOB        | phone      |
++-----+-----------+------------+------------+
+|   1 | Kathmandu | 2000-02-01 | 1234567890 |
+|   2 | Pokhara   | 1995-05-10 | 9812435632 |
++-----+-----------+------------+------------+
+2 rows in set (0.00 sec)
+
+mysql>

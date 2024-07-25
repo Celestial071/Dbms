@@ -1,0 +1,236 @@
+# This is the answer of the 5th question of the assignment.
+
+Enter password: *******
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 14
+Server version: 8.0.37 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2024, Oracle and/or its
+affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| college            |
+| employee_db        |
+| client_db          |
+| teacher_db         |
+| information_schema |
+| mysql              |
+| performance_schema |
+| sakila             |
+| sys                |
+| world              |
++--------------------+
+10 rows in set (0.00 sec)
+
+mysql> create database emp_db;
+Query OK, 1 row affected (0.02 sec)
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| college            |
+| employee_db        |
+| client_db          |
+| teacher_db         |
+| information_schema |
+| mysql              |
+| performance_schema |
+| sakila             |
+| emp_db             |
+| sys                |
+| world              |
++--------------------+
+11 rows in set (0.00 sec)
+
+mysql> use emp_db;
+Database changed
+
+mysql> CREATE TABLE Emp (
+    -> Emp_No INT,
+    -> Emp_Name VARCHAR(50),
+    -> Designation VARCHAR(50),
+    -> Basic DECIMAL(10, 2),
+    -> DA DECIMAL(10, 2),
+    -> HRA DECIMAL(10, 2),
+    -> PF DECIMAL(10, 2),
+    -> Gross_Pay DECIMAL(10, 2),
+    -> Net_Pay DECIMAL(10, 2)
+    -> );
+Query OK, 0 rows affected (0.06 sec)
+
+mysql> INSERT INTO Emp (Emp_No, Emp_Name, Designation, Basic, DA, HRA, PF, Gross_Pay, Net_Pay)
+    -> VALUES
+    -> (1, 'Michael Scott', 'Regional Manager', 25000.00, 5000.00, 3750.00, 2000.00, NULL, NULL),
+    -> (2, 'Jim Halpert', 'Salesman', 18000.00, 3600.00, 2700.00, 1500.00, NULL, NULL),
+    -> (3, 'Pam Beesly', 'Receptionist', 15000.00, 3000.00, 2250.00, 1200.00, NULL, NULL),
+    -> (4, 'Dwight Schrute', 'Assistant to the Regional Manager', 20000.00, 4000.00, 3000.00, 1700.00, NULL, NULL),
+    -> (5, 'Stanley Hudson', 'Salesman', 19000.00, 3800.00, 2850.00, 1600.00, NULL, NULL);
+Query OK, 5 rows affected (0.03 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> SELECT * FROM Emp;
++--------+-----------------------------+------------------------------------+----------+---------+---------+---------+-----------+---------+
+| Emp_No | Emp_Name                    | Designation                        | Basic    | DA      | HRA     | PF      | Gross_Pay | Net_Pay |
++--------+-----------------------------+------------------------------------+----------+---------+---------+---------+-----------+---------+
+|      1 | Michael Scott               | Regional Manager                   | 25000.00 | 5000.00 | 3750.00 | 2000.00 |      NULL |    NULL |
+|      2 | Jim Halpert                 | Salesman                           | 18000.00 | 3600.00 | 2700.00 | 1500.00 |      NULL |    NULL |
+|      3 | Pam Beesly                  | Receptionist                       | 15000.00 | 3000.00 | 2250.00 | 1200.00 |      NULL |    NULL |
+|      4 | Dwight Schrute              | Assistant to the Regional Manager  | 20000.00 | 4000.00 | 3000.00 | 1700.00 |      NULL |    NULL |
+|      5 | Stanley Hudson              | Salesman                           | 19000.00 | 3800.00 | 2850.00 | 1600.00 |      NULL |    NULL |
++--------+-----------------------------+------------------------------------+----------+---------+---------+---------+-----------+---------+
+5 rows in set (0.00 sec)
+
+mysql> UPDATE Emp
+    -> SET Gross_Pay = Basic + DA + HRA,
+    ->     Net_Pay = Gross_Pay - PF;
+Query OK, 5 rows affected (0.02 sec)
+Rows matched: 5  Changed: 5  Warnings: 0
+
+mysql> SELECT * FROM Emp;
++--------+-----------------------------+------------------------------------+----------+---------+---------+---------+-----------+----------+
+| Emp_No | Emp_Name                    | Designation                        | Basic    | DA      | HRA     | PF      | Gross_Pay | Net_Pay  |
++--------+-----------------------------+------------------------------------+----------+---------+---------+---------+-----------+----------+
+|      1 | Michael Scott               | Regional Manager                   | 25000.00 | 5000.00 | 3750.00 | 2000.00 |  33750.00 | 31750.00 |
+|      2 | Jim Halpert                 | Salesman                           | 18000.00 | 3600.00 | 2700.00 | 1500.00 |  24300.00 | 22800.00 |
+|      3 | Pam Beesly                  | Receptionist                       | 15000.00 | 3000.00 | 2250.00 | 1200.00 |  20250.00 | 19050.00 |
+|      4 | Dwight Schrute              | Assistant to the Regional Manager  | 20000.00 | 4000.00 | 3000.00 | 1700.00 |  28700.00 | 27000.00 |
+|      5 | Stanley Hudson              | Salesman                           | 19000.00 | 3800.00 | 2850.00 | 1600.00 |  26650.00 | 25050.00 |
++--------+-----------------------------+------------------------------------+----------+---------+---------+---------+-----------+----------+
+5 rows in set (0.00 sec)
+
+mysql> ALTER TABLE Emp ADD COLUMN DA DECIMAL(10, 2);
+ERROR 1060 (42S21): Duplicate column name 'DA'
+mysql>
+mysql> UPDATE Emp
+    -> SET DA = Basic * 0.20;
+Query OK, 0 rows affected (0.00 sec)
+Rows matched: 5  Changed: 0  Warnings: 0
+
+mysql> SELECT * FROM Emp;
++--------+-----------------------------+------------------------------------+----------+---------+---------+---------+-----------+----------+
+| Emp_No | Emp_Name                    | Designation                        | Basic    | DA      | HRA     | PF      | Gross_Pay | Net_Pay  |
++--------+-----------------------------+------------------------------------+----------+---------+---------+---------+-----------+----------+
+|      1 | Michael Scott               | Regional Manager                   | 25000.00 | 5000.00 | 3750.00 | 2000.00 |  33750.00 | 31750.00 |
+|      2 | Jim Halpert                 | Salesman                           | 18000.00 | 3600.00 | 2700.00 | 1500.00 |  24300.00 | 22800.00 |
+|      3 | Pam Beesly                  | Receptionist                       | 15000.00 | 3000.00 | 2250.00 | 1200.00 |  20250.00 | 19050.00 |
+|      4 | Dwight Schrute              | Assistant to the Regional Manager  | 20000.00 | 4000.00 | 3000.00 | 1700.00 |  28700.00 | 27000.00 |
+|      5 | Stanley Hudson              | Salesman                           | 19000.00 | 3800.00 | 2850.00 | 1600.00 |  26650.00 | 25050.00 |
++--------+-----------------------------+------------------------------------+----------+---------+---------+---------+-----------+----------+
+5 rows in set (0.00 sec)
+
+mysql> ALTER TABLE Emp ADD COLUMN HRA DECIMAL(10, 2);
+ERROR 1060 (42S21): Duplicate column name 'HRA'
+mysql>
+mysql> UPDATE Emp
+    -> SET HRA = Basic * 0.15;
+Query OK, 1 row affected (0.02 sec)
+Rows matched: 5  Changed: 1  Warnings: 0
+
+mysql> SELECT * FROM Emp;
++--------+-----------------------------+------------------------------------+----------+---------+---------+---------+-----------+----------+
+| Emp_No | Emp_Name                    | Designation                        | Basic    | DA      | HRA     | PF      | Gross_Pay | Net_Pay  |
++--------+-----------------------------+------------------------------------+----------+---------+---------+---------+-----------+----------+
+|      1 | Michael Scott               | Regional Manager                   | 25000.00 | 5000.00 | 3750.00 | 2000.00 |  33750.00 | 31750.00 |
+|      2 | Jim Halpert                 | Salesman                           | 18000.00 | 3600.00 | 2700.00 | 1500.00 |  24300.00 | 22800.00 |
+|      3 | Pam Beesly                  | Receptionist                       | 15000.00 | 3000.00 | 2250.00 | 1200.00 |  20250.00 | 19050.00 |
+|      4 | Dwight Schrute              | Assistant to the Regional Manager  | 20000.00 | 4000.00 | 3000.00 | 1700.00 |  28700.00 | 27000.00 |
+|      5 | Stanley Hudson              | Salesman                           | 19000.00 | 3800.00 | 2850.00 | 1600.00 |  26650.00 | 25050.00 |
++--------+-----------------------------+------------------------------------+----------+---------+---------+---------+-----------+----------+
+5 rows in set (0.00 sec)
+
+mysql> ALTER TABLE Emp ADD COLUMN PF DECIMAL(10, 2);
+ERROR 1060 (42S21): Duplicate column name 'PF'
+mysql>
+mysql> UPDATE Emp
+    -> SET PF = Basic * 0.10;
+Query OK, 5 rows affected (0.01 sec)
+Rows matched: 5  Changed: 5  Warnings: 0
+
+mysql> SELECT * FROM Emp;
++--------+-----------------------------+------------------------------------+----------+---------+---------+---------+-----------+----------+
+| Emp_No | Emp_Name                    | Designation                        | Basic    | DA      | HRA     | PF      | Gross_Pay | Net_Pay  |
++--------+-----------------------------+------------------------------------+----------+---------+---------+---------+-----------+----------+
+|      1 | Michael Scott               | Regional Manager                   | 25000.00 | 5000.00 | 3750.00 | 2500.00 |  33750.00 | 31250.00 |
+|      2 | Jim Halpert                 | Salesman                           | 18000.00 | 3600.00 | 2700.00 | 1800.00 |  24300.00 | 22500.00 |
+|      3 | Pam Beesly                  | Receptionist                       | 15000.00 | 3000.00 | 2250.00 | 1500.00 |  20250.00 | 18750.00 |
+|      4 | Dwight Schrute              | Assistant to the Regional Manager  | 20000.00 | 4000.00 | 3000.00 | 2000.00 |  28700.00 | 26700.00 |
+|      5 | Stanley Hudson              | Salesman                           | 19000.00 | 3800.00 | 2850.00 | 1900.00 |  26650.00 | 24750.00 |
++--------+-----------------------------+------------------------------------+----------+---------+---------+---------+-----------+----------+
+5 rows in set (0.00 sec)
+
+mysql> ALTER TABLE Emp ADD COLUMN Gross_Pay DECIMAL(10, 2);
+ERROR 1060 (42S21): Duplicate column name 'Gross_Pay'
+mysql>
+mysql> UPDATE Emp
+    -> SET Gross_Pay = Basic + DA + HRA;
+Query OK, 1 row affected (0.02 sec)
+Rows matched: 5  Changed: 1  Warnings: 0
+
+mysql> ALTER TABLE Emp ADD COLUMN Net_Pay DECIMAL(10, 2);
+ERROR 1060 (42S21): Duplicate column name 'Net_Pay'
+mysql>
+mysql> UPDATE Emp
+    -> SET Net_Pay = Gross_Pay - PF;
+Query OK, 5 rows affected (0.04 sec)
+Rows matched: 5  Changed: 5  Warnings: 0
+
+mysql> SELECT * FROM Emp;
++--------+-----------------------------+------------------------------------+----------+---------+---------+---------+-----------+----------+
+| Emp_No | Emp_Name                    | Designation                        | Basic    | DA      | HRA     | PF      | Gross_Pay | Net_Pay  |
++--------+-----------------------------+------------------------------------+----------+---------+---------+---------+-----------+----------+
+|      1 | Michael Scott               | Regional Manager                   | 25000.00 | 5000.00 | 3750.00 | 2500.00 |  33750.00 | 31250.00 |
+|      2 | Jim Halpert                 | Salesman                           | 18000.00 | 3600.00 | 2700.00 | 1800.00 |  24300.00 | 22500.00 |
+|      3 | Pam Beesly                  | Receptionist                       | 15000.00 | 3000.00 | 2250.00 | 1500.00 |  20250.00 | 18750.00 |
+|      4 | Dwight Schrute              | Assistant to the Regional Manager  | 20000.00 | 4000.00 | 3000.00 | 2000.00 |  28700.00 | 26700.00 |
+|      5 | Stanley Hudson              | Salesman                           | 19000.00 | 3800.00 | 2850.00 | 1900.00 |  26650.00 | 24750.00 |
++--------+-----------------------------+------------------------------------+----------+---------+---------+---------+-----------+----------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT * FROM Emp e1
+    -> WHERE Basic = (SELECT MIN(Basic) FROM Emp e2 WHERE e1.Designation = e2.Designation);
++--------+-----------------------------+------------------------------------+----------+---------+---------+---------+-----------+----------+
+| Emp_No | Emp_Name                    | Designation                        | Basic    | DA      | HRA     | PF      | Gross_Pay | Net_Pay  |
++--------+-----------------------------+------------------------------------+----------+---------+---------+---------+-----------+----------+
+|      1 | Michael Scott               | Regional Manager                   | 25000.00 | 5000.00 | 3750.00 | 2500.00 |  33750.00 | 31250.00 |
+|      2 | Jim Halpert                 | Salesman                           | 18000.00 | 3600.00 | 2700.00 | 1800.00 |  24300.00 | 22500.00 |
+|      3 | Pam Beesly                  | Receptionist                       | 15000.00 | 3000.00 | 2250.00 | 1500.00 |  20250.00 | 18750.00 |
+|      4 | Dwight Schrute              | Assistant to the Regional Manager  | 20000.00 | 4000.00 | 3000.00 | 2000.00 |  28700.00 | 26700.00 |
+|      5 | Stanley Hudson              | Salesman                           | 19000.00 | 3800.00 | 2850.00 | 1900.00 |  26650.00 | 24750.00 |
++--------+-----------------------------+------------------------------------+----------+---------+---------+---------+-----------+----------+
+5 rows in set (0.00 sec)
+
+mysql> UPDATE Emp
+    -> SET Net_Pay = Net_Pay + 1200
+    -> WHERE Net_Pay < 10000;
+Query OK, 0 rows affected (0.00 sec)
+Rows matched: 0  Changed: 0  Warnings: 0
+
+mysql> SELECT * FROM Emp
+    -> WHERE Gross_Pay BETWEEN 10000 AND 20000;
++--------+-------------+-----------------------------------+----------+---------+---------+---------+-----------+----------+
+| Emp_No | Emp_Name    | Designation                       | Basic    | DA      | HRA     | PF      | Gross_Pay | Net_Pay  |
++--------+-------------+-----------------------------------+----------+---------+---------+---------+-----------+----------+
+|      3 | Pam Beesly  | Receptionist                      | 15000.00 | 3000.00 | 2250.00 | 1500.00 |  20250.00 | 18750.00 |
++--------+-------------+-----------------------------------+----------+---------+---------+---------+-----------+----------+
+1 row in set (0.00 sec)
+
+mysql> SELECT * FROM Emp
+    -> WHERE Net_Pay = (SELECT MAX(Net_Pay) FROM Emp);
++--------+-----------------------------+------------------------------------+----------+---------+---------+---------+-----------+----------+
+| Emp_No | Emp_Name                    | Designation                        | Basic    | DA      | HRA     | PF      | Gross_Pay | Net_Pay  |
++--------+-----------------------------+------------------------------------+----------+---------+---------+---------+-----------+----------+
+|      1 | Michael Scott               | Regional Manager                   | 25000.00 | 5000.00 | 3750.00 | 2500.00 |  33750.00 | 31250.00 |
++--------+-----------------------------+------------------------------------+----------+---------+---------+---------+-----------+----------+
+1 row in set (0.00 sec)
+
+mysql>

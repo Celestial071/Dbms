@@ -1,0 +1,170 @@
+# This is the answer of the 6th question of the assignment.
+
+Enter password: *******
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 16
+Server version: 8.0.37 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2024, Oracle and/or its
+affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| college            |
+| employee_db        |
+| client_db          |
+| teacher_db         |
+| emp_db             |
+| information_schema |
+| mysql              |
+| performance_schema |
+| sakila             |
+| sys                |
+| world              |
++--------------------+
+11 rows in set (0.00 sec)
+
+mysql> create database company_db;
+Query OK, 1 row affected (0.02 sec)
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| college            |
+| employee_db        |
+| client_db          |
+| teacher_db         |
+| emp_db             |
+| information_schema |
+| mysql              |
+| performance_schema |
+| sakila             |
+| company_db         |
+| sys                |
+| world              |
++--------------------+
+12 rows in set (0.00 sec)
+
+mysql> use company_db;
+Database changed
+
+mysql> CREATE TABLE Dept (
+    -> deptno INT PRIMARY KEY,
+    -> dname VARCHAR(50),
+    -> loc VARCHAR(50)
+    -> );
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> CREATE TABLE Emp (
+    -> empno INT PRIMARY KEY,
+    -> ename VARCHAR(50),
+    -> job VARCHAR(50),
+    -> mgr INT,
+    -> hiredate DATE,
+    -> sal DECIMAL(10, 2),
+    -> comm DECIMAL(10, 2),
+    -> deptno INT,
+    -> FOREIGN KEY (deptno) REFERENCES Dept(deptno),
+    -> FOREIGN KEY (mgr) REFERENCES Emp(empno)
+    -> );
+Query OK, 0 rows affected (0.10 sec)
+
+mysql> INSERT INTO Dept (deptno, dname, loc) VALUES
+    -> (10, 'Sales', 'New York'),
+    -> (20, 'Engineering', 'San Francisco'),
+    -> (30, 'Marketing', 'Los Angeles');
+Query OK, 3 rows affected (0.01 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> select * from dept;
++--------+-------------+---------------+
+| deptno | dname       | loc           |
++--------+-------------+---------------+
+|     10 | Sales       | New York      |
+|     20 | Engineering | San Francisco |
+|     30 | Marketing   | Los Angeles   |
++--------+-------------+---------------+
+3 rows in set (0.00 sec)
+
+mysql> INSERT INTO Emp (empno, ename, job, mgr, hiredate, sal, comm, deptno) VALUES
+    -> (1, 'Alex Turner', 'Manager', NULL, '1990-01-15', 80000, NULL, 10),
+    -> (2, 'Rachel Green', 'Sales Associate', 1, '2000-03-22', 60000, 1000, 10),
+    -> (3, 'Monica Geller', 'Chef', 1, '1998-07-10', 50000, NULL, 10),
+    -> (4, 'Ross Geller', 'Paleontologist', NULL, '1995-09-01', 75000, NULL, 20),
+    -> (5, 'Chandler Bing', 'IT Specialist', 4, '1996-05-12', 70000, 1500, 20),
+    -> (6, 'Joey Tribbiani', 'Actor', NULL, '2003-11-16', 45000, 500, 30);
+Query OK, 6 rows affected (0.02 sec)
+Records: 6  Duplicates: 0  Warnings: 0
+
+mysql> select * from emp;
++-------+---------------+---------------+------+------------+----------+---------+--------+
+| empno | ename         | job           | mgr  | hiredate   | sal      | comm    | deptno |
++-------+---------------+---------------+------+------------+----------+---------+--------+
+|     1 | Alex Turner   | Manager       | NULL | 1990-01-15 | 80000.00 |    NULL |     10 |
+|     2 | Rachel Green  | Sales Associate|    1 | 2000-03-22 | 60000.00 | 1000.00 |     10 |
+|     3 | Monica Geller | Chef          |    1 | 1998-07-10 | 50000.00 |    NULL |     10 |
+|     4 | Ross Geller   | Paleontologist| NULL | 1995-09-01 | 75000.00 |    NULL |     20 |
+|     5 | Chandler Bing | IT Specialist |    4 | 1996-05-12 | 70000.00 | 1500.00 |     20 |
+|     6 | Joey Tribbiani| Actor         | NULL | 2003-11-16 | 45000.00 |  500.00 |     30 |
++-------+---------------+---------------+------+------------+----------+---------+--------+
+6 rows in set (0.00 sec)
+
+mysql> UPDATE Emp
+    -> SET sal = sal * 1.15
+    -> WHERE TIMESTAMPDIFF(YEAR, hiredate, CURDATE()) > 30;
+Query OK, 1 row affected (0.02 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> DELETE FROM Emp
+    -> WHERE TIMESTAMPDIFF(YEAR, hiredate, CURDATE()) > 30;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> SELECT mgr, COUNT(*) AS num_employees
+    -> FROM Emp
+    -> GROUP BY mgr
+    -> ORDER BY num_employees DESC
+    -> LIMIT 1;
++------+---------------+
+| mgr  | num_employees |
++------+---------------+
+|    1 |             2 |
++------+---------------+
+1 row in set (0.00 sec)
+
+mysql> CREATE VIEW EmployeeManagerView AS
+    -> SELECT e1.ename AS employee_name, e2.ename AS manager_name
+    -> FROM Emp e1
+    -> LEFT JOIN Emp e2 ON e1.mgr = e2.empno;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> select * from emp;
++-------+---------------+---------------+------+------------+----------+---------+--------+
+| empno | ename         | job           | mgr  | hiredate   | sal      | comm    | deptno |
++-------+---------------+---------------+------+------------+----------+---------+--------+
+|     1 | Alex Turner   | Manager       | NULL | 1990-01-15 | 92000.00 |    NULL |     10 |
+|     2 | Rachel Green  | Sales Associate|    1 | 2000-03-22 | 60000.00 | 1000.00 |     10 |
+|     3 | Monica Geller | Chef          |    1 | 1998-07-10 | 50000.00 |    NULL |     10 |
+|     4 | Ross Geller   | Paleontologist| NULL | 1995-09-01 | 75000.00 |    NULL |     20 |
+|     5 | Chandler Bing | IT Specialist |    4 | 1996-05-12 | 70000.00 | 1500.00 |     20 |
+|     6 | Joey Tribbiani| Actor         | NULL | 2003-11-16 | 45000.00 |  500.00 |     30 |
++-------+---------------+---------------+------+------------+----------+---------+--------+
+6 rows in set (0.00 sec)
+
+mysql> select * from dept;
++--------+-------------+---------------+
+| deptno | dname       | loc           |
++--------+-------------+---------------+
+|     10 | Sales       | New York      |
+|     20 | Engineering | San Francisco |
+|     30 | Marketing   | Los Angeles   |
++--------+-------------+---------------+
+3 rows in set (0.00 sec)

@@ -1,0 +1,126 @@
+# This is the answer to the first question of the lab-assignment.pdf
+
+Enter password: *********
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 9
+Server version: 8.0.37 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2024, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| college            |
+| information_schema |
+| mysql              |
+| performance_schema |
+| sakila             |
+| sys                |
+| world              |
++--------------------+
+7 rows in set (0.02 sec)
+
+mysql> create database employee_db;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> use employee_db;
+Database changed
+
+mysql> CREATE TABLE EMPLOYEES (
+    -> Emp_id INT,
+    -> First_name VARCHAR(50),
+    -> Last_name VARCHAR(50),
+    -> Phone_No VARCHAR(15),
+    -> Hire_date DATE,
+    -> Job_id VARCHAR(10),
+    -> Emp_Salary DECIMAL(10, 2),
+    -> Commission_Pct DECIMAL(5, 2),
+    -> Manager_id INT,
+    -> Department_id INT
+    -> );
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> INSERT INTO EMPLOYEES (Emp_id, First_name, Last_name, Phone_No, Hire_date, Job_id, Emp_Salary, Commission_Pct, Manager_id, Department_id)
+    -> VALUES
+    -> (1, 'Alice', 'Johnson', '234-567-8901', '2023-06-15', 'J106', 5500.00, 9.00, 106, 90),
+    -> (2, 'Bob', 'Williams', '234-567-8902', '2023-07-20', 'J107', 5300.00, 10.00, 107, 100),
+    -> (3, 'Charlie', 'Davis', '234-567-8903', '2023-08-10', 'J108', 5100.00, 11.00, 108, 110),
+    -> (4, 'Diana', 'Martinez', '234-567-8904', '2023-09-25', 'J109', 5700.00, 7.00, 109, 120),
+    -> (5, 'Evan', 'Garcia', '234-567-8905', '2023-10-30', 'J110', 4900.00, 12.00, 110, 130);
+Query OK, 5 rows affected (0.00 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> SELECT * FROM EMPLOYEES;
++--------+------------+-----------+--------------+------------+--------+------------+----------------+------------+---------------+
+| Emp_id | First_name | Last_name | Phone_No     | Hire_date  | Job_id | Emp_Salary | Commission_Pct | Manager_id | Department_id |
++--------+------------+-----------+--------------+------------+--------+------------+----------------+------------+---------------+
+|      1 | Alice      | Johnson   | 234-567-8901 | 2023-06-15 | J106   |    5500.00 |           9.00 |        106 |            90 |
+|      2 | Bob        | Williams  | 234-567-8902 | 2023-07-20 | J107   |    5300.00 |          10.00 |        107 |           100 |
+|      3 | Charlie    | Davis     | 234-567-8903 | 2023-08-10 | J108   |    5100.00 |          11.00 |        108 |           110 |
+|      4 | Diana      | Martinez  | 234-567-8904 | 2023-09-25 | J109   |    5700.00 |           7.00 |        109 |           120 |
+|      5 | Evan       | Garcia    | 234-567-8905 | 2023-10-30 | J110   |    4900.00 |          12.00 |        110 |           130 |
++--------+------------+-----------+--------------+------------+--------+------------+----------------+------------+---------------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT Emp_id, First_name, Last_name, Emp_Salary FROM EMPLOYEES;
++--------+------------+-----------+------------+
+| Emp_id | First_name | Last_name | Emp_Salary |
++--------+------------+-----------+------------+
+|      1 | Alice      | Johnson   |    5500.00 |
+|      2 | Bob        | Williams  |    5300.00 |
+|      3 | Charlie    | Davis     |    5100.00 |
+|      4 | Diana      | Martinez  |    5700.00 |
+|      5 | Evan       | Garcia    |    4900.00 |
++--------+------------+-----------+------------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT First_name, Last_name FROM EMPLOYEES WHERE Emp_Salary >= 4800;
++------------+-----------+
+| First_name | Last_name |
++------------+-----------+
+| Alice      | Johnson   |
+| Bob        | Williams  |
+| Charlie    | Davis     |
+| Diana      | Martinez  |
+| Evan       | Garcia    |
++------------+-----------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT * FROM EMPLOYEES WHERE Last_name = 'Martinez';
++--------+------------+-----------+--------------+------------+--------+------------+----------------+------------+---------------+
+| Emp_id | First_name | Last_name | Phone_No     | Hire_date  | Job_id | Emp_Salary | Commission_Pct | Manager_id | Department_id |
++--------+------------+-----------+--------------+------------+--------+------------+----------------+------------+---------------+
+|      4 | Diana      | Martinez  | 234-567-8904 | 2023-09-25 | J109   |    5700.00 |           7.00 |        109 |           120 |
++--------+------------+-----------+--------------+------------+--------+------------+----------------+------------+---------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT First_name, Last_name FROM EMPLOYEES WHERE Department_id IN (90, 100, 110);
++------------+-----------+
+| First_name | Last_name |
++------------+-----------+
+| Alice      | Johnson   |
+| Bob        | Williams  |
+| Charlie    | Davis     |
++------------+-----------+
+3 rows in set (0.00 sec)
+
+mysql> SELECT DISTINCT Manager_id FROM EMPLOYEES;
++------------+
+| Manager_id |
++------------+
+|        106 |
+|        107 |
+|        108 |
+|        109 |
+|        110 |
++------------+
+5 rows in set (0.00 sec)
+
+mysql>

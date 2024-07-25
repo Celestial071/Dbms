@@ -1,0 +1,559 @@
+# LAB 1 and 2
+
+Setting environment for using XAMPP for Windows.
+user@celestial c:\xampp
+# cd C:\xampp\mysql\bin
+
+user@celestial C:\xampp\mysql\bin
+# mysql -u root -p
+Enter password: ******
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MariaDB connection id is 9
+Server version: 10.4.32-MariaDB mariadb.org binary distribution
+
+Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+MariaDB [(none)]> create database celestial;
+Query OK, 1 row affected (0.001 sec)
+
+MariaDB [(none)]> use celestial;
+Database changed
+MariaDB [celestial]> create table emp(empno int, ename nvarchar(20) not null, job nvarchar(10) not null, deptno int, sal int);
+Query OK, 0 rows affected (0.017 sec)
+
+MariaDB [celestial]> desc emp;
++--------+-------------+------+-----+---------+-------+
+| Field  | Type        | Null | Key | Default | Extra |
++--------+-------------+------+-----+---------+-------+
+| empno  | int(11)     | YES  |     | NULL    |       |
+| ename  | varchar(20) | NO   |     | NULL    |       |
+| job    | varchar(10) | NO   |     | NULL    |       |
+| deptno | int(11)     | YES  |     | NULL    |       |
+| sal    | int(11)     | YES  |     | NULL    |       |
++--------+-------------+------+-----+---------+-------+
+5 rows in set (0.028 sec)
+
+MariaDB [celestial]> alter table emp add experience int;
+Query OK, 0 rows affected (0.018 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+MariaDB [celestial]> desc emp;
++------------+-------------+------+-----+---------+-------+
+| Field      | Type        | Null | Key | Default | Extra |
++------------+-------------+------+-----+---------+-------+
+| empno      | int(11)     | YES  |     | NULL    |       |
+| ename      | varchar(20) | NO   |     | NULL    |       |
+| job        | varchar(10) | NO   |     | NULL    |       |
+| deptno     | int(11)     | YES  |     | NULL    |       |
+| sal        | int(11)     | YES  |     | NULL    |       |
+| experience | int(11)     | YES  |     | NULL    |       |
++------------+-------------+------+-----+---------+-------+
+6 rows in set (0.011 sec)
+
+MariaDB [celestial]> alter table emp modify column job nvarchar(12);
+Query OK, 0 rows affected (0.033 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+MariaDB [celestial]> desc emp;
++------------+-------------+------+-----+---------+-------+
+| Field      | Type        | Null | Key | Default | Extra |
++------------+-------------+------+-----+---------+-------+
+| empno      | int(11)     | YES  |     | NULL    |       |
+| ename      | varchar(20) | NO   |     | NULL    |       |
+| job        | varchar(12) | YES  |     | NULL    |       |
+| deptno     | int(11)     | YES  |     | NULL    |       |
+| sal        | int(11)     | YES  |     | NULL    |       |
+| experience | int(11)     | YES  |     | NULL    |       |
++------------+-------------+------+-----+---------+-------+
+6 rows in set (0.006 sec)
+
+MariaDB [celestial]> alter table emp add phone_no nvarchar(20);
+Query OK, 0 rows affected (0.013 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+MariaDB [celestial]> desc emp;
++------------+-------------+------+-----+---------+-------+
+| Field      | Type        | Null | Key | Default | Extra |
++------------+-------------+------+-----+---------+-------+
+| empno      | int(11)     | YES  |     | NULL    |       |
+| ename      | varchar(20) | NO   |     | NULL    |       |
+| job        | varchar(12) | YES  |     | NULL    |       |
+| deptno     | int(11)     | YES  |     | NULL    |       |
+| sal        | int(11)     | YES  |     | NULL    |       |
+| experience | int(11)     | YES  |     | NULL    |       |
+| phone_no   | int(11)     | YES  |     | NULL    |       |
++------------+-------------+------+-----+---------+-------+
+7 rows in set (0.005 sec)
+
+MariaDB [celestial]> alter table emp modify column phone_no int;
+Query OK, 0 rows affected (0.042 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+MariaDB [celestial]> desc emp;
++------------+-------------+------+-----+---------+-------+
+| Field      | Type        | Null | Key | Default | Extra |
++------------+-------------+------+-----+---------+-------+
+| empno      | int(11)     | YES  |     | NULL    |       |
+| ename      | varchar(20) | NO   |     | NULL    |       |
+| job        | varchar(12) | YES  |     | NULL    |       |
+| deptno     | int(11)     | YES  |     | NULL    |       |
+| sal        | int(11)     | YES  |     | NULL    |       |
+| experience | int(11)     | YES  |     | NULL    |       |
+| phone_no   | int(11)     | YES  |     | NULL    |       |
++------------+-------------+------+-----+---------+-------+
+7 rows in set (0.013 sec)
+
+MariaDB [celestial]> ALTER TABLE EMP ADD CONSTRAINT Pkey1 PRIMARY KEY(EmpNo);
+Query OK, 0 rows affected, 1 warning (0.029 sec)
+Records: 0  Duplicates: 0  Warnings: 1
+
+MariaDB [celestial]> desc emp;
++------------+-------------+------+-----+---------+-------+
+| Field      | Type        | Null | Key | Default | Extra |
++------------+-------------+------+-----+---------+-------+
+| empno      | int(11)     | NO   | PRI | NULL    |       |
+| ename      | varchar(20) | NO   |     | NULL    |       |
+| job        | varchar(12) | YES  |     | NULL    |       |
+| deptno     | int(11)     | YES  |     | NULL    |       |
+| sal        | int(11)     | YES  |     | NULL    |       |
+| experience | int(11)     | YES  |     | NULL    |       |
+| phone_no   | int(11)     | YES  |     | NULL    |       |
++------------+-------------+------+-----+---------+-------+
+7 rows in set (0.011 sec)
+
+MariaDB [celestial]> show full columns from emp;
++------------+-------------+-----------------+------+-----+---------+-------+---------------------------------+---------+
+| Field      | Type        | Collation       | Null | Key | Default | Extra | Privileges                      | Comment |
++------------+-------------+-----------------+------+-----+---------+-------+---------------------------------+---------+
+| empno      | int(11)     | NULL            | NO   | PRI | NULL    |       | select,insert,update,references |         |
+| ename      | varchar(20) | utf8_general_ci | NO   |     | NULL    |       | select,insert,update,references |         |
+| job        | varchar(12) | utf8_general_ci | YES  |     | NULL    |       | select,insert,update,references |         |
+| deptno     | int(11)     | NULL            | YES  |     | NULL    |       | select,insert,update,references |         |
+| sal        | int(11)     | NULL            | YES  |     | NULL    |       | select,insert,update,references |         |
+| experience | int(11)     | NULL            | YES  |     | NULL    |       | select,insert,update,references |         |
+| phone_no   | int(11)     | NULL            | YES  |     | NULL    |       | select,insert,update,references |         |
++------------+-------------+-----------------+------+-----+---------+-------+---------------------------------+---------+
+7 rows in set (0.011 sec)
+
+MariaDB [celestial]> alter table emp modify column ename nvarchar(30) not null;
+Query OK, 0 rows affected (0.014 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+MariaDB [celestial]> show full columns from emp;
++------------+-------------+-----------------+------+-----+---------+-------+---------------------------------+---------+
+| Field      | Type        | Collation       | Null | Key | Default | Extra | Privileges                      | Comment |
++------------+-------------+-----------------+------+-----+---------+-------+---------------------------------+---------+
+| empno      | int(11)     | NULL            | NO   | PRI | NULL    |       | select,insert,update,references |         |
+| ename      | varchar(30) | utf8_general_ci | NO   |     | NULL    |       | select,insert,update,references |         |
+| job        | varchar(12) | utf8_general_ci | YES  |     | NULL    |       | select,insert,update,references |         |
+| deptno     | int(11)     | NULL            | YES  |     | NULL    |       | select,insert,update,references |         |
+| sal        | int(11)     | NULL            | YES  |     | NULL    |       | select,insert,update,references |         |
+| experience | int(11)     | NULL            | YES  |     | NULL    |       | select,insert,update,references |         |
+| phone_no   | int(11)     | NULL            | YES  |     | NULL    |       | select,insert,update,references |         |
++------------+-------------+-----------------+------+-----+---------+-------+---------------------------------+---------+
+7 rows in set (0.012 sec)
+
+MariaDB [celestial]> alter table emp modify column ename nvarchar(30) null;
+Query OK, 0 rows affected (0.028 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+MariaDB [celestial]> show full columns from emp;
++------------+-------------+-----------------+------+-----+---------+-------+---------------------------------+---------+
+| Field      | Type        | Collation       | Null | Key | Default | Extra | Privileges                      | Comment |
++------------+-------------+-----------------+------+-----+---------+-------+---------------------------------+---------+
+| empno      | int(11)     | NULL            | NO   | PRI | NULL    |       | select,insert,update,references |         |
+| ename      | varchar(30) | utf8_general_ci | YES  |     | NULL    |       | select,insert,update,references |         |
+| job        | varchar(12) | utf8_general_ci | YES  |     | NULL    |       | select,insert,update,references |         |
+| deptno     | int(11)     | NULL            | YES  |     | NULL    |       | select,insert,update,references |         |
+| sal        | int(11)     | NULL            | YES  |     | NULL    |       | select,insert,update,references |         |
+| experience | int(11)     | NULL            | YES  |     | NULL    |       | select,insert,update,references |         |
+| phone_no   | int(11)     | NULL            | YES  |     | NULL    |       | select,insert,update,references |         |
++------------+-------------+-----------------+------+-----+---------+-------+---------------------------------+---------+
+7 rows in set (0.011 sec)
+
+MariaDB [celestial]> create table dept(deptno int primary key, dname varchar(10), loc nvarchar(10));
+Query OK, 0 rows affected (0.015 sec)
+
+MariaDB [celestial]> desc dept;
++--------+-------------+------+-----+---------+-------+
+| Field  | Type        | Null | Key | Default | Extra |
++--------+-------------+------+-----+---------+-------+
+| deptno | int(11)     | NO   | PRI | NULL    |       |
+| dname  | varchar(10) | YES  |     | NULL    |       |
+| loc    | varchar(10) | YES  |     | NULL    |       |
++--------+-------------+------+-----+---------+-------+
+3 rows in set (0.012 sec)
+
+MariaDB [celestial]> create table emp1(ename nvarchar(10), empno int, constraint ch check(empno>100));
+Query OK, 0 rows affected (0.012 sec)
+
+MariaDB [celestial]> alter table emp drop column experience;
+Query OK, 0 rows affected (0.016 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+MariaDB [celestial]> desc emp;
++----------+-------------+------+-----+---------+-------+
+| Field    | Type        | Null | Key | Default | Extra |
++----------+-------------+------+-----+---------+-------+
+| empno    | int(11)     | NO   | PRI | NULL    |       |
+| ename    | varchar(30) | YES  |     | NULL    |       |
+| job      | varchar(12) | YES  |     | NULL    |       |
+| deptno   | int(11)     | YES  |     | NULL    |       |
+| sal      | int(11)     | YES  |     | NULL    |       |
+| phone_no | int(11)     | YES  |     | NULL    |       |
++----------+-------------+------+-----+---------+-------+
+6 rows in set (0.006 sec)
+
+MariaDB [celestial]> insert into emp(empno, ename, job, deptno, sal) VALUES
+    -> (1, 'Alex', 'developer', 1, 15000),
+    -> (2, 'John', 'teacher', 2, 22000),
+    -> (3, 'Lily', 'nurse', 3, 33000),
+    -> (4, 'Emma', 'programmer', 4, 44000),
+    -> (5, 'James', 'analyst', 5, 55000),
+    -> (6, 'Sophia', 'administrator', 6, 66000),
+    -> (7, 'Michael', 'supervisor', 7, 77000),
+    -> (8, 'Ethan', 'executive', 8, 88000),
+    -> (9, 'Olivia', 'chief', 9, 99000),
+    -> (10, 'Lucas', 'director', 10, 110000);
+Query OK, 10 rows affected (0.013 sec)
+Records: 10  Duplicates: 0  Warnings: 0
+
+MariaDB [celestial]> select * from emp;
++-------+---------+--------------+--------+--------+----------+
+| empno | ename   | job          | deptno | sal    | phone_no |
++-------+---------+--------------+--------+--------+----------+
+|     1 | Alex    | developer    |      1 |  15000 |     NULL |
+|     2 | John    | teacher      |      2 |  22000 |     NULL |
+|     3 | Lily    | nurse        |      3 |  33000 |     NULL |
+|     4 | Emma    | programmer   |      4 |  44000 |     NULL |
+|     5 | James   | analyst      |      5 |  55000 |     NULL |
+|     6 | Sophia  | administrator|      6 |  66000 |     NULL |
+|     7 | Michael | supervisor   |      7 |  77000 |     NULL |
+|     8 | Ethan   | executive    |      8 |  88000 |     NULL |
+|     9 | Olivia  | chief        |      9 |  99000 |     NULL |
+|    10 | Lucas   | director     |     10 | 110000 |     NULL |
++-------+---------+--------------+--------+--------+----------+
+10 rows in set (0.007 sec)
+
+MariaDB [celestial]> select distinct job from emp;
++--------------+
+| job          |
++--------------+
+| developer    |
+| teacher      |
+| nurse        |
+| programmer   |
+| analyst      |
+| administrator|
+| supervisor   |
+| executive    |
+| chief        |
+| director     |
++--------------+
+10 rows in set (0.008 sec)
+
+MariaDB [celestial]> select distinct sal from emp;
++--------+
+| sal    |
++--------+
+|  15000 |
+|  22000 |
+|  33000 |
+|  44000 |
+|  55000 |
+|  66000 |
+|  77000 |
+|  88000 |
+|  99000 |
+| 110000 |
++--------+
+10 rows in set (0.000 sec)
+
+MariaDB [celestial]> select empno, ename from emp where sal>30000;
++-------+---------+
+| empno | ename   |
++-------+---------+
+|     4 | Emma    |
+|     5 | James   |
+|     6 | Sophia  |
+|     7 | Michael |
+|     8 | Ethan   |
+|     9 | Olivia  |
+|    10 | Lucas   |
++-------+---------+
+7 rows in set (0.007 sec)
+
+MariaDB [celestial]> select empno, ename from emp order by empno;
++-------+---------+
+| empno | ename   |
++-------+---------+
+|     1 | Alex    |
+|     2 | John    |
+|     3 | Lily    |
+|     4 | Emma    |
+|     5 | James   |
+|     6 | Sophia  |
+|     7 | Michael |
+|     8 | Ethan   |
+|     9 | Olivia  |
+|    10 | Lucas   |
++-------+---------+
+10 rows in set (0.000 sec)
+
+MariaDB [celestial]> select empno, ename from emp order by empno desc;
++-------+---------+
+| empno | ename   |
++-------+---------+
+|    10 | Lucas   |
+|     9 | Olivia  |
+|     8 | Ethan   |
+|     7 | Michael |
+|     6 | Sophia  |
+|     5 | James   |
+|     4 | Emma    |
+|     3 | Lily    |
+|     2 | John    |
+|     1 | Alex    |
++-------+---------+
+10 rows in set (0.000 sec)
+
+MariaDB [celestial]> create table newtable LIKE emp;
+Query OK, 0 rows affected (0.007 sec)
+
+MariaDB [celestial]> desc newtable;
++----------+-------------+------+-----+---------+-------+
+| Field    | Type        | Null | Key | Default | Extra |
++----------+-------------+------+-----+---------+-------+
+| empno    | int(11)     | NO   | PRI | NULL    |       |
+| ename    | varchar(30) | YES  |     | NULL    |       |
+| job      | varchar(12) | YES  |     | NULL    |       |
+| deptno   | int(11)     | YES  |     | NULL    |       |
+| sal      | int(11)     | YES  |     | NULL    |       |
+| phone_no | int(11)     | YES  |     | NULL    |       |
++----------+-------------+------+-----+---------+-------+
+6 rows in set (0.005 sec)
+
+MariaDB [celestial]> select * from newtable;
+Empty set (0.001 sec)
+
+MariaDB [celestial]> create table newtable2 as select * from emp;
+Query OK, 10 rows affected (0.013 sec)
+Records: 10  Duplicates: 0  Warnings: 0
+
+MariaDB [celestial]> desc newtable2;
++----------+-------------+------+-----+---------+-------+
+| Field    | Type        | Null | Key | Default | Extra |
++----------+-------------+------+-----+---------+-------+
+| empno    | int(11)     | NO   |     | NULL    |       |
+| ename    | varchar(30) | YES  |     | NULL    |       |
+| job      | varchar(12) | YES  |     | NULL    |       |
+| deptno   | int(11)     | YES  |     | NULL    |       |
+| sal      | int(11)     | YES  |     | NULL    |       |
+| phone_no | int(11)     | YES  |     | NULL    |       |
++----------+-------------+------+-----+---------+-------+
+6 rows in set (0.004 sec)
+
+MariaDB [celestial]> select * from newtable2;
++-------+---------+--------------+--------+--------+----------+
+| empno | ename   | job          | deptno | sal    | phone_no |
++-------+---------+--------------+--------+--------+----------+
+|     1 | Alex    | developer    |      1 |  15000 |     NULL |
+|     2 | John    | teacher      |      2 |  22000 |     NULL |
+|     3 | Lily    | nurse        |      3 |  33000 |     NULL |
+|     4 | Emma    | programmer   |      4 |  44000 |     NULL |
+|     5 | James   | analyst      |      5 |  55000 |     NULL |
+|     6 | Sophia  | administrator|      6 |  66000 |     NULL |
+|     7 | Michael | supervisor   |      7 |  77000 |     NULL |
+|     8 | Ethan   | executive    |      8 |  88000 |     NULL |
+|     9 | Olivia  | chief        |      9 |  99000 |     NULL |
+|    10 | Lucas   | director     |     10 | 110000 |     NULL |
++-------+---------+--------------+--------+--------+----------+
+10 rows in set (0.000 sec)
+
+MariaDB [celestial]> insert into newtable select * from emp;
+Query OK, 10 rows affected (0.002 sec)
+Records: 10  Duplicates: 0  Warnings: 0
+
+MariaDB [celestial]> select * from newtable;
++-------+---------+--------------+--------+--------+----------+
+| empno | ename   | job          | deptno | sal    | phone_no |
++-------+---------+--------------+--------+--------+----------+
+|     1 | Alex    | developer    |      1 |  15000 |     NULL |
+|     2 | John    | teacher      |      2 |  22000 |     NULL |
+|     3 | Lily    | nurse        |      3 |  33000 |     NULL |
+|     4 | Emma    | programmer   |      4 |  44000 |     NULL |
+|     5 | James   | analyst      |      5 |  55000 |     NULL |
+|     6 | Sophia  | administrator|      6 |  66000 |     NULL |
+|     7 | Michael | supervisor   |      7 |  77000 |     NULL |
+|     8 | Ethan   | executive    |      8 |  88000 |     NULL |
+|     9 | Olivia  | chief        |      9 |  99000 |     NULL |
+|    10 | Lucas   | director     |     10 | 110000 |     NULL |
++-------+---------+--------------+--------+--------+----------+
+10 rows in set (0.001 sec)
+
+MariaDB [celestial]> update emp set ename='Krishna' where empno=1;
+Query OK, 1 row affected (0.013 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+MariaDB [celestial]> select * from emp;
++-------+---------+--------------+--------+--------+----------+
+| empno | ename   | job          | deptno | sal    | phone_no |
++-------+---------+--------------+--------+--------+----------+
+|     1 | Krishna | developer    |      1 |  15000 |     NULL |
+|     2 | John    | teacher      |      2 |  22000 |     NULL |
+|     3 | Lily    | nurse        |      3 |  33000 |     NULL |
+|     4 | Emma    | programmer   |      4 |  44000 |     NULL |
+|     5 | James   | analyst      |      5 |  55000 |     NULL |
+|     6 | Sophia  | administrator|      6 |  66000 |     NULL |
+|     7 | Michael | supervisor   |      7 |  77000 |     NULL |
+|     8 | Ethan   | executive    |      8 |  88000 |     NULL |
+|     9 | Olivia  | chief        |      9 |  99000 |     NULL |
+|    10 | Lucas   | director     |     10 | 110000 |     NULL |
++-------+---------+--------------+--------+--------+----------+
+10 rows in set (0.001 sec)
+
+MariaDB [celestial]> select * from newtable;
++-------+---------+--------------+--------+--------+----------+
+| empno | ename   | job          | deptno | sal    | phone_no |
++-------+---------+--------------+--------+--------+----------+
+|     1 | Alex    | developer    |      1 |  15000 |     NULL |
+|     2 | John    | teacher      |      2 |  22000 |     NULL |
+|     3 | Lily    | nurse        |      3 |  33000 |     NULL |
+|     4 | Emma    | programmer   |      4 |  44000 |     NULL |
+|     5 | James   | analyst      |      5 |  55000 |     NULL |
+|     6 | Sophia  | administrator|      6 |  66000 |     NULL |
+|     7 | Michael | supervisor   |      7 |  77000 |     NULL |
+|     8 | Ethan   | executive    |      8 |  88000 |     NULL |
+|     9 | Olivia  | chief        |      9 |  99000 |     NULL |
+|    10 | Lucas   | director     |     10 | 110000 |     NULL |
++-------+---------+--------------+--------+--------+----------+
+10 rows in set (0.001 sec)
+
+MariaDB [celestial]> delete from newtable where empno=1;
+Query OK, 1 row affected (0.009 sec)
+
+MariaDB [celestial]> select * from newtable;
++-------+---------+-----------+--------+--------+----------+
+| empno | ename   | job       | deptno | sal    | phone_no |
++-------+---------+-----------+--------+--------+----------+
+|     2 | John    | teacher   |      2 |  22000 |     NULL |
+|     3 | Lily    | nurse     |      3 |  33000 |     NULL |
+|     4 | Emma    | programmer|      4 |  44000 |     NULL |
+|     5 | James   | analyst   |      5 |  55000 |     NULL |
+|     6 | Sophia  | admin     |      6 |  66000 |     NULL |
+|     7 | Michael | supervisor|      7 |  77000 |     NULL |
+|     8 | Ethan   | executive |      8 |  88000 |     NULL |
+|     9 | Olivia  | chief     |      9 |  99000 |     NULL |
+|    10 | Lucas   | director  |     10 | 110000 |     NULL |
++-------+---------+-----------+--------+--------+----------+
+9 rows in set (0.001 sec)
+
+MariaDB [celestial]> update newtable set sal=sal*1.10;
+Query OK, 9 rows affected (0.010 sec)
+Rows matched: 9  Changed: 9  Warnings: 0
+
+MariaDB [celestial]> select * from newtable;
++-------+---------+-----------+--------+--------+----------+
+| empno | ename   | job       | deptno | sal    | phone_no |
++-------+---------+-----------+--------+--------+----------+
+|     2 | John    | teacher   |      2 |  24200 |     NULL |
+|     3 | Lily    | nurse     |      3 |  36300 |     NULL |
+|     4 | Emma    | programmer|      4 |  48400 |     NULL |
+|     5 | James   | analyst   |      5 |  60500 |     NULL |
+|     6 | Sophia  | admin     |      6 |  72600 |     NULL |
+|     7 | Michael | supervisor|      7 |  84700 |     NULL |
+|     8 | Ethan   | executive |      8 |  96800 |     NULL |
+|     9 | Olivia  | chief     |      9 | 108900 |     NULL |
+|    10 | Lucas   | director  |     10 |121000  |     NULL |
++-------+---------+-----------+--------+--------+----------+
+9 rows in set (0.001 sec)
+
+MariaDB [celestial]> delete from newtable where sal<20000;
+Query OK, 0 rows affected (0.007 sec)
+
+MariaDB [celestial]> select * from newtable;
++-------+---------+-----------+--------+--------+----------+
+| empno | ename   | job       | deptno | sal    | phone_no |
++-------+---------+-----------+--------+--------+----------+
+|     2 | John    | teacher   |      2 |  24200 |     NULL |
+|     3 | Lily    | nurse     |      3 |  36300 |     NULL |
+|     4 | Emma    | programmer|      4 |  48400 |     NULL |
+|     5 | James   | analyst   |      5 |  60500 |     NULL |
+|     6 | Sophia  | admin     |      6 |  72600 |     NULL |
+|     7 | Michael | supervisor|      7 |  84700 |     NULL |
+|     8 | Ethan   | executive |      8 |  96800 |     NULL |
+|     9 | Olivia  | chief     |      9 |108900  |     NULL |
+|    10 | Lucas   | director  |     10 |121000  |     NULL |
++-------+---------+-----------+--------+--------+----------+
+9 rows in set (0.001 sec)
+
+MariaDB [celestial]> select * from newtable where ename='a%';
+Empty set (0.007 sec)
+
+MariaDB [celestial]> select * from newtable where ename='b%';
+Empty set (0.001 sec)
+
+MariaDB [celestial]> select * from newtable where ename='B%';
+Empty set (0.002 sec)
+
+MariaDB [celestial]> select * from newtable where ename='A%';
+Empty set (0.001 sec)
+
+MariaDB [celestial]> select * from newtable where ename like 'A%';
++-------+---------+-----------+--------+-------+----------+
+| empno | ename   | job       | deptno | sal   | phone_no |
++-------+---------+-----------+--------+-------+----------+
+|     2 | John    | teacher   |      2 |  24200|     NULL |
+|     8 | Ethan   | executive |      8 | 96800 |     NULL |
++-------+---------+-----------+--------+-------+----------+
+2 rows in set (0.002 sec)
+
+MariaDB [celestial]> select * from newtable where ename like '%a';
++-------+---------+-----------+--------+--------+----------+
+| empno | ename   | job       | deptno | sal    | phone_no |
++-------+---------+-----------+--------+--------+----------+
+|     4 | Emma    | programmer|      4 |  48400 |     NULL |
+|     5 | James   | analyst   |      5 |  60500 |     NULL |
+|     9 | Olivia  | chief     |      9 |108900  |     NULL |
++-------+---------+-----------+--------+--------+----------+
+3 rows in set (0.001 sec)
+
+MariaDB [celestial]> select * from newtable;
++-------+---------+-----------+--------+--------+----------+
+| empno | ename   | job       | deptno | sal    | phone_no |
++-------+---------+-----------+--------+--------+----------+
+|     2 | John    | teacher   |      2 |  24200 |     NULL |
+|     3 | Lily    | nurse     |      3 |  36300 |     NULL |
+|     4 | Emma    | programmer|      4 |  48400 |     NULL |
+|     5 | James   | analyst   |      5 |  60500 |     NULL |
+|     6 | Sophia  | admin     |      6 |  72600 |     NULL |
+|     7 | Michael | supervisor|      7 |  84700 |     NULL |
+|     8 | Ethan   | executive |      8 |  96800 |     NULL |
+|     9 | Olivia  | chief     |      9 |108900  |     NULL |
+|    10 | Lucas   | director  |     10 |121000  |     NULL |
++-------+---------+-----------+--------+--------+----------+
+9 rows in set (0.001 sec)
+
+MariaDB [celestial]> select * from newtable where ename like '%1';
+Empty set (0.000 sec)
+
+MariaDB [celestial]> select * from newtable where ename like 's%a';
++-------+---------+------+--------+--------+----------+
+| empno | ename   | job  | deptno | sal    | phone_no |
++-------+---------+------+--------+--------+----------+
+|    10 | Lucas   | director |     10 | 121000 |     NULL |
++-------+---------+------+--------+--------+----------+
+1 row in set (0.001 sec)
+
+MariaDB [celestial]> select *from newtable where ename like '_a%';
++-------+---------+---------+--------+--------+----------+
+| empno | ename   | job     | deptno | sal    | phone_no |
++-------+---------+---------+--------+--------+----------+
+|     2 | John    | teacher |      2 |  24200 |     NULL |
+|     6 | Sophia  | admin   |      6 |  72600 |     NULL |
++-------+---------+---------+--------+--------+----------+
+2 rows in set (0.001 sec)
+
+MariaDB [celestial]>
